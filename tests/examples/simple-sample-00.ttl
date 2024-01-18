@@ -1,0 +1,5 @@
+@prefix ab: <http://learningsparql.com/ns/addressbook#> .
+
+ab:richard ab:homeTel "9833632312" .
+ab:richard ab:homeTel "9155555555" ;
+           ab:homeTel "9122222222" .

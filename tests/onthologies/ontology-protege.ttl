@@ -1,0 +1,413 @@
+@prefix : <https://w3id.org/example#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix aeros: <https://aeros-project.eu/ontologies/aerOSMVP#> .
+@base <https://w3id.org/example#> .
+
+<https://w3id.org/example#> rdf:type owl:Ontology ;
+                             owl:versionIRI <https://w3id.org/example/1.0.1> ;
+                             dc:contributor <https://w3id.org/people#AContributorURI> ;
+                             dc:created "2023-12-12"^^xsd:date ;
+                             dc:creator <https://w3id.org/people#AuthorURI> ;
+                             dc:description "This ontology has been meticulously crafted to serve as the foundational structure for the aerOS MVP, effectively capturing the intricate relationships and components that constitute the aerOS ecosystem."@en ;
+                             dc:license <https://creativecommons.org/licenses/by/4.0/> ;
+                             dc:title "aerOS MVP"@en ;
+                             vann:preferredNamespacePrefix "choosenprefix" ;
+                             vann:preferredNamespaceUri <https://w3id.org/example#> ;
+                             owl:priorVersion <https://w3id.org/example/1.0.0> ;
+                             owl:versionInfo "0.0.1" ;
+                             mod:createdWith <https://chowlk.linkeddata.es/> .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/contributor
+dc:contributor rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/created
+dc:created rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/creator
+dc:creator rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/description
+dc:description rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/license
+dc:license rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/title
+dc:title rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+vann:preferredNamespacePrefix rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2002/07/owl#priorVersion
+owl:priorVersion rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2002/07/owl#versionIRI
+owl:versionIRI rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2002/07/owl#versionInfo
+owl:versionInfo rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/mod#createdWith
+mod:createdWith rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#domain
+aeros:domain rdf:type owl:ObjectProperty ;
+             rdfs:label "domain" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#domainStatus
+aeros:domainStatus rdf:type owl:ObjectProperty ;
+                   rdfs:domain aeros:Domain ;
+                   rdfs:range aeros:DomainStatus ;
+                   rdfs:label "domain status" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#highLevelOrchestrator
+aeros:highLevelOrchestrator rdf:type owl:ObjectProperty ;
+                            rdfs:domain aeros:Domain ;
+                            rdfs:range aeros:HighLevelOrchestrator ;
+                            rdfs:label "high level orchestrator" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#infrastructureElement
+aeros:infrastructureElement rdf:type owl:ObjectProperty ;
+                            rdfs:domain aeros:ServiceComponent ;
+                            rdfs:range aeros:InfrastructureElement ;
+                            rdfs:label "infrastructure element" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#lowLevelOrchestrator
+aeros:lowLevelOrchestrator rdf:type owl:ObjectProperty ;
+                           rdfs:domain aeros:InfrastructureElement ;
+                           rdfs:range aeros:LowLevelOrchestrator ;
+                           rdfs:label "low level orchestrator" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#orchestrationType
+aeros:orchestrationType rdf:type owl:ObjectProperty ;
+                        rdfs:domain aeros:LowLevelOrchestrator ;
+                        rdfs:range aeros:OrchestrationType ;
+                        rdfs:label "orchestration type" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#owner
+aeros:owner rdf:type owl:ObjectProperty ;
+            rdfs:domain aeros:Domain ;
+            rdfs:range foaf:Agent ;
+            rdfs:label "owner" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#service
+aeros:service rdf:type owl:ObjectProperty ;
+              rdfs:domain aeros:ServiceComponent ;
+              rdfs:range aeros:Service ;
+              rdfs:label "service" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#CPUCores
+aeros:CPUCores rdf:type owl:DatatypeProperty ;
+               rdfs:domain aeros:InfrastructureElement ;
+               rdfs:range xsd:integer ;
+               rdfs:label "CPU Cores" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#avgPowerConsumption
+aeros:avgPowerConsumption rdf:type owl:DatatypeProperty ;
+                          rdfs:domain aeros:InfrastructureElement ;
+                          rdfs:range xsd:float ;
+                          rdfs:label "avg power consumption" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#currentCPUUsage
+aeros:currentCPUUsage rdf:type owl:DatatypeProperty ;
+                      rdfs:domain aeros:InfrastructureElement ;
+                      rdfs:range xsd:float ;
+                      rdfs:label "current c p u usage" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#currentPowerConsumption
+aeros:currentPowerConsumption rdf:type owl:DatatypeProperty ;
+                              rdfs:domain aeros:InfrastructureElement ;
+                              rdfs:range xsd:float ;
+                              rdfs:label "current power consumption" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#currentRAM
+aeros:currentRAM rdf:type owl:DatatypeProperty ;
+                 rdfs:domain aeros:InfrastructureElement ;
+                 rdfs:range xsd:float ;
+                 rdfs:label "current r a m" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#description
+aeros:description rdf:type owl:DatatypeProperty ;
+                  rdfs:domain aeros:Domain ;
+                  rdfs:range xsd:string ;
+                  rdfs:label "description" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#image
+aeros:image rdf:type owl:DatatypeProperty ;
+            rdfs:domain aeros:ServiceComponent ;
+            rdfs:range xsd:string ;
+            rdfs:label "image" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#internalIP
+aeros:internalIP rdf:type owl:DatatypeProperty ;
+                 rdfs:domain aeros:InfrastructureElement ;
+                 rdfs:range xsd:string ;
+                 rdfs:label "internal i p" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#ports
+aeros:ports rdf:type owl:DatatypeProperty ;
+            rdfs:domain aeros:ServiceComponent ;
+            rdfs:range xsd:string ;
+            rdfs:label "ports" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#publicUrl
+aeros:publicUrl rdf:type owl:DatatypeProperty ;
+                rdfs:domain aeros:Domain ;
+                rdfs:range xsd:string ;
+                rdfs:label "public url" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#realTimeCapable
+aeros:realTimeCapable rdf:type owl:DatatypeProperty ;
+                      rdfs:domain aeros:InfrastructureElement ;
+                      rdfs:range xsd:boolean ;
+                      rdfs:label "real time capable" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#serviceDescription
+aeros:serviceDescription rdf:type owl:DatatypeProperty ;
+                         rdfs:domain aeros:Service ;
+                         rdfs:range xsd:string ;
+                         rdfs:label "service description" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#serviceName
+aeros:serviceName rdf:type owl:DatatypeProperty ;
+                  rdfs:domain aeros:Service ;
+                  rdfs:range xsd:string ;
+                  rdfs:label "service name" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#totalRAM
+aeros:totalRAM rdf:type owl:DatatypeProperty ;
+               rdfs:domain aeros:InfrastructureElement ;
+               rdfs:range xsd:float ;
+               rdfs:label "total r a m" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#url
+aeros:url rdf:type owl:DatatypeProperty ;
+          rdfs:domain aeros:HighLevelOrchestrator ,
+                      aeros:LowLevelOrchestrator ;
+          rdfs:range xsd:string ;
+          rdfs:label "url" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://xmlns.com/foaf/0.1/Agent
+foaf:Agent rdf:type owl:Class ;
+           rdfs:label "Agent" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#Domain
+aeros:Domain rdf:type owl:Class ;
+             rdfs:subClassOf [ rdf:type owl:Restriction ;
+                               owl:onProperty aeros:domainStatus ;
+                               owl:cardinality "1"^^xsd:nonNegativeInteger
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty aeros:highLevelOrchestrator ;
+                               owl:cardinality "1"^^xsd:nonNegativeInteger
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty aeros:description ;
+                               owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty aeros:publicUrl ;
+                               owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                             ] ;
+             rdfs:label "Domain" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#DomainStatus
+aeros:DomainStatus rdf:type owl:Class ;
+                   rdfs:label "Domain Status" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#HighLevelOrchestrator
+aeros:HighLevelOrchestrator rdf:type owl:Class ;
+                            rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:url ;
+                                              owl:cardinality "1"^^xsd:nonNegativeInteger
+                                            ] ;
+                            rdfs:label "High Level Orchestrator" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#InfrastructureElement
+aeros:InfrastructureElement rdf:type owl:Class ;
+                            rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:domain ;
+                                              owl:cardinality "1"^^xsd:nonNegativeInteger
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:lowLevelOrchestrator ;
+                                              owl:cardinality "1"^^xsd:nonNegativeInteger
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:internalIP ;
+                                              owl:cardinality "1"^^xsd:nonNegativeInteger
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:CPUCores ;
+                                              owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:avgPowerConsumption ;
+                                              owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:currentCPUUsage ;
+                                              owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:currentPowerConsumption ;
+                                              owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:currentRAM ;
+                                              owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:realTimeCapable ;
+                                              owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty aeros:totalRAM ;
+                                              owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                            ] ;
+                            rdfs:label "Infrastructure Element" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#LowLevelOrchestrator
+aeros:LowLevelOrchestrator rdf:type owl:Class ;
+                           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                             owl:onProperty aeros:domain ;
+                                             owl:cardinality "1"^^xsd:nonNegativeInteger
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty aeros:orchestrationType ;
+                                             owl:cardinality "1"^^xsd:nonNegativeInteger
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty aeros:url ;
+                                             owl:cardinality "1"^^xsd:nonNegativeInteger
+                                           ] ;
+                           rdfs:label "Low Level Orchestrator" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#OrchestrationType
+aeros:OrchestrationType rdf:type owl:Class ;
+                        rdfs:label "Orchestration Type" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#Service
+aeros:Service rdf:type owl:Class ;
+              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty aeros:serviceName ;
+                                owl:cardinality "1"^^xsd:nonNegativeInteger
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty aeros:serviceDescription ;
+                                owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                              ] ;
+              rdfs:label "Service" .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#ServiceComponent
+aeros:ServiceComponent rdf:type owl:Class ;
+                       rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                         owl:onProperty aeros:infrastructureElement ;
+                                         owl:cardinality "1"^^xsd:nonNegativeInteger
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty aeros:service ;
+                                         owl:cardinality "1"^^xsd:nonNegativeInteger
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty aeros:image ;
+                                         owl:cardinality "1"^^xsd:nonNegativeInteger
+                                       ] ;
+                       rdfs:label "Service Component" .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#DOCKER
+aeros:DOCKER rdf:type owl:NamedIndividual ,
+                      aeros:OrchestrationType .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#FUNCTIONAL
+aeros:FUNCTIONAL rdf:type owl:NamedIndividual ,
+                          aeros:DomainStatus .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#KUBERNETES
+aeros:KUBERNETES rdf:type owl:NamedIndividual ,
+                          aeros:OrchestrationType .
+
+
+###  https://aeros-project.eu/ontologies/aerOSMVP#PRELIMINAR
+aeros:PRELIMINAR rdf:type owl:NamedIndividual ,
+                          aeros:DomainStatus .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi

@@ -1,3 +1,9 @@
+/.history
+*.pyc
+config.yml
+/.idea
+owl2jsonld-0.2.1-standalone.jar
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -46,7 +52,7 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-*.py,cover
+*.py,cover/
 .hypothesis/
 .pytest_cache/
 cover/

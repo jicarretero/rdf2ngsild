@@ -1,0 +1,11 @@
+# filename: simple_sample-bnode.ttl
+
+@prefix ab: <http://learningsparql.com/ns/addressbook#> .
+
+ab:i0432 ab:address       _:b1 .
+ab:i0432 ab:tel           "915555555" .
+
+_:b1    ab:postalCode    "49345" ;
+        ab:city          "Springfield" ;
+        ab:streetAddress "32 Main St." ;
+        ab:region        "Connecticut" . 

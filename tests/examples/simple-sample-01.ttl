@@ -1,0 +1,11 @@
+@prefix ab: <http://learningsparql.com/ns/addressbook#> .
+
+ab:richard ab:homeTel "9833632312" .
+ab:richard ab:email   "elrichal@somewhere.go" .
+
+ab:cindy ab:homeTel "435634123" .
+ab:cindy ab:email   "lacindy@whoelscould.be" .
+
+ab:manuel ab:homeTel "981321567" .
+ab:manuel ab:email   "mauel@example.one" .
+ab:manuel ab:email   "eltiomanuel@thecompany.is" .
