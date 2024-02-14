@@ -53,4 +53,4 @@ COPY --from=pip-requirements $INSTALLATION_PATH /usr/local
 RUN mv $INSTALLATION_PATH/entrypoint.sh / && chmod +x entrypoint.sh
 
 # python main.py --from-kafka --to-orionld
-ENTRYPOINT [ "/entrypint.sh" ]
+ENTRYPOINT [ "/entrypoint.sh" ]
