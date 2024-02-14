@@ -1,6 +1,5 @@
 rdflib>=7.0
 python-dateutil>=2.8.2
 pyoxigraph
-confluent_kafka
 kafka_python
 requests
