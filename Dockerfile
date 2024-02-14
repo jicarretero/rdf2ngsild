@@ -23,7 +23,7 @@ ARG COMPONENT=rdf-to-ngsild
 ARG VERSION=develop
 ARG INSTALLATION_PATH=/opt/$PROJECT/$COMPONENT
 
-RUN apk add --no-cache --virtual .build-deps gcc musl-dev linux-headers libffi-dev cargo openssl-dev
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev linux-headers
 
 RUN mkdir -p $INSTALLATION_PATH
 COPY --from=git-clone $INSTALLATION_PATH/requirements.txt /requirements.txt
