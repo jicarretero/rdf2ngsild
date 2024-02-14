@@ -5,6 +5,7 @@ from conversor.subject_analysis import SubjectAnalysis
 from conversor.predicates import PredicateError
 from conversor.subjects import SubjectError, Subject
 from helpers import get_graph
+from config_translator import ConfigTranslator
 
 # from rdflib import namespace
 # import CSVW, DC, DCAT, DCTERMS, DOAP, FOAF, ODRL2, ORG, OWL, \
@@ -18,34 +19,26 @@ class TestRDFGraph(TestCase):
     """
 
     def setUp(self) -> None:
-        pass
+        ConfigTranslator("configs/test_config.cfg")
+
 
     def test_turtle_1(self):
-        g = get_graph("examples/ex041.ttl")
+        '''
+        Simple test to check that files can be properly readen
 
-        print(f"Graph g has {len(g)} statemets.")
-        # print(g.serialize(format="json-ld"))
+        :return:
+        '''
+        for file in ['examples/ex012.ttl', 'examples/simple-sample-01.ttl',
+                     'examples/ex041.ttl', 'examples/simple-sample-relationship.ttl']:
+            g = get_graph(file)
 
-        ttl_thing = g.serialize(format="turtle")
+            print(f"Graph g has {len(g)} statemets.")
+            # print(g.serialize(format="json-ld"))
 
-        for a in g.namespaces():
-            print(a)
+            # ttl_thing = g.serialize(format="turtle")
 
-        for subj, pred, obj in g:
-            print(f"{subj} | {pred} | {obj}")
-
-    def test_namespaces(self) -> None:
-        g = get_graph("examples/ex041.ttl")
-        for subj, pred, _ in g:
-            # print(f"{type(subj)} | {type(pred)} | {type(obj)}")
-            if isinstance(subj, term.URIRef):
-                prefix, uri, thing = g.compute_qname(subj)
-                print(prefix, uri, thing)
-            if isinstance(pred, term.URIRef):
-                prefix, uri, thing = g.compute_qname(pred)
-                print(str(pred))
-                print(prefix, uri, thing)
-                print("    ", term.URIRef)
+            for subj, pred, obj in g:
+                print(f"{subj} | {pred} | {obj}")
 
     def test_exceptions(self):
         a = PredicateError("Hola mundo")
@@ -61,26 +54,60 @@ class TestRDFGraph(TestCase):
             assert str(pe) == "Hola mundo"
 
     def test_subject(self):
-        g = get_graph("onthologies/ontology-protege.ttl")
+        g = get_graph("examples/simple-sample-00.ttl")
 
         for subj, _, _ in g:
             s = Subject(g, subj)
-            if not s.is_bnode:
-                print(s)
+            print(s.subject)
+            assert(s.subject == "http://learningsparql.com/ns/addressbook#richard")
+            assert(s.short_name == "urn:ngsi-ld:addressbook:richard")
+            assert(s.s_type) == "addressbook"
 
 
     def test_subject_analysis(self):
         g = get_graph("examples/ex041.ttl")
         sa = SubjectAnalysis(g)
-        for subj, pred, obj in g:
-            sa.set_subject_data(subj, pred, obj)
 
         for a in sa:
+            assert(a['type'] == "addressbook")
+            assert(a['id'] == "urn:ngsi-ld:addressbook:i0432")
             js = json.dumps(a)
             print(f"curl -iX POST 'http://localhost:1026/ngsi-ld/v1/entities/' \
 -H 'Content-Type: application/ld+json' \
 --data-raw '{js}'")
             print(js)
+            
+    def test_sample_relationship(self):
+        '''
+        Test that ngsi-ld urns are ETSI GS CIM 009 Annex A.3 compliant
+
+            urn:ngsi-ld:EntityTypeName:EntityIdentificationString
+        :return:
+        '''
+        g = get_graph("examples/simple-sample-relationship.ttl")
+        sa = SubjectAnalysis(g)
+
+        for a in sa:
+            match a['id']:
+                case 'urn:ngsi-ld:addressbook:cindy':
+                    assert (True)
+                case 'urn:ngsi-ld:addressbook:manuel':
+                    print("Manuel")
+                    assert 'isbossof' in a
+                    assert a['isbossof']['object'] == 'urn:ngsi-ld:addressbook:cindy'
+                    assert a['isbossof']['type'] == 'Relationship'
+                case other:
+                    assert(False)
+
+    def do_subject_analysis_parse(self):
+        g = get_graph("examples/simple-sample-relationship.ttl")
+        sa = SubjectAnalysis(g)
+    def test_secuential_processing_speed(self):
+        from timeit import timeit
+        print(timeit(self.do_subject_analysis_parse, number=2000))
+
+    def test_async_processing_speed(self):
+        pass
 
 
 if __name__ == "__main__":

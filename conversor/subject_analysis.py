@@ -57,8 +57,9 @@ class SubjectAnalysis:
             if v.is_bnode or not self.apply_filters(v):
                 continue
             s = {}
-            s['id'] = k
-            s['type'] = str(v.url)  # .removesuffix("#")
+            # s['id'] = k
+            s['id'] = v.short_name
+            s['type'] = str(v.s_type)  # .removesuffix("#")
 
             for pr_k, pr_v, is_r in v:
                 t, o = ("Relationship", "object") if is_r else ("Property", "value")

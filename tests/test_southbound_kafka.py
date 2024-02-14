@@ -1,38 +1,35 @@
+import time
 import unittest
-from helpers import get_graph
-from conversor.subject_analysis import SubjectAnalysis
-from conversor.owl_to_context import Owl2Context
-import json
 from config_translator import ConfigTranslator
+from southbound.kafka_writer import KafkaWriter
+from southbound.kafka_reader import KafkaReader
+from rdflib import Graph
+from conversor.subject_analysis import SubjectAnalysis
 
-
-class TestAddContext(unittest.TestCase):
+class TestSouthboundKafka(unittest.TestCase):
     def setUp(self) -> None:
-        self.o = get_graph("onthologies/ontology-protege.ttl")
-        self.g = get_graph("examples/containerlab-graph.nt")
         ConfigTranslator("configs/test_config_nameonly.cfg")
-        # self.g = get_graph("examples/simple-sample-relationship.ttl")
 
-    @staticmethod
-    def print_curl(j_data):
-        print(f"curl -iX POST 'http://localhost:1026/ngsi-ld/v1/entities/' \
-     -H 'Content-Type: application/ld+json' \
-     --data-raw '{json.dumps(j_data)}'")
+    def thread_writer(self):
+        print("EN THREAD WRITER!")
+        with open("examples/containerlab-graph.nt", "r") as f:
+            data = f.read()
+        kw = KafkaWriter().produce_message(data)
 
-    def test_add_context(self):
-        context = Owl2Context(self.o)
-        t = context.context()
-        sa = SubjectAnalysis(self.g)
-        sa.add_context(t)
+    def test_kafka(self):
+        r = KafkaReader()
+        self.thread_writer()
+        time.sleep(0.3)
 
-        for a in sa:
-            # self.print_curl(a)
-            print(json.dumps(a))
+        print("EN THREAD Reader!")
+        msg = r.consume_one()
+        r.commit()
+        assert(msg is not None)
 
-    def test_transform_rdf_type(self):
-        ids = ['clab-srlinux-openconfig-02-srl2','clab-srlinux-openconfig-02-srl1', 'srl1_e1-1-srl2_e1-1',
-               'srlinux-openconfig-02', 'srl1-e1-1', 'srl2-e1-1']
-        sa = SubjectAnalysis(self.g)
+        g = Graph()
+        g.parse(data=msg)
+
+        sa = SubjectAnalysis(g)
         for a in sa:
             match a['id']:
                 case 'srl1_e1-1-srl2_e1-1':
@@ -42,7 +39,6 @@ class TestAddContext(unittest.TestCase):
                     assert 'clab-srlinux-openconfig-02-srl2' in a['connectsNode']['object']
                     assert a['linkIdentifier']['type'] == 'Property'
                     assert a['linkIdentifier']['value'] == 'srl1_e1-1-srl2_e1-1'
-                    print(json.dumps(a))
                 case 'srlinux-openconfig-02':
                     assert a['type'] == 'Network'
                 case 'clab-srlinux-openconfig-02-srl2':
@@ -59,5 +55,6 @@ class TestAddContext(unittest.TestCase):
                     assert True
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
+    print("Estoy en la puta clase que quiero estar!")
     unittest.main()

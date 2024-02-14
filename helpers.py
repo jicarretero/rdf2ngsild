@@ -1,6 +1,10 @@
 from rdflib import Graph
 from conversor.subjects import Subject
 
+def get_graph_from_message(message) -> Graph:
+    g = Graph()
+    g.parse(data=message)
+    return g
 
 def get_graph(filename) -> Graph:
     """
@@ -34,3 +38,4 @@ def apply_filters(subject: Subject, filter: set) -> bool:
             if not r:
                 break
     return r
+

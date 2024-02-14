@@ -1,5 +1,5 @@
 from rdflib import Graph, term
-
+from transformer import transformer
 
 class PredicateError(TypeError):
     def __init__(self, error_msg):
@@ -20,11 +20,12 @@ class Predicates:
     def add_value(self, obj):
         if isinstance(obj, term.Literal) or isinstance(obj, term.URIRef):
             self.isreference = self.isreference or isinstance(obj, term.URIRef)
+            value = str(obj) if not isinstance(obj, term.URIRef) else transformer(str(obj))
             if self.value is None:
-                self.value = str(obj)
+                self.value = value
             elif type(self.value) is list:
-                self.value.append(str(obj))
+                self.value.append(value)
             else:
                 v = self.value
                 self.value = [v]
-                self.value.append(str(obj))
+                self.value.append(value)
