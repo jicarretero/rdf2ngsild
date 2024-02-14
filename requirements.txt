@@ -3,3 +3,5 @@ python-dateutil>=2.8.2
 pyoxigraph
 kafka_python
 requests
+pytz
+
