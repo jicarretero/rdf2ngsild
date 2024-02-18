@@ -1,5 +1,5 @@
-# GUARD - LCP
-# author: Alex Carrega <alessandro.carrega@cnit.it>
+# aerOS - Conversor
+# author: joseignacio.carretero <joseignacio.carretero@fiware.org>
 
 # Stage GIT CLONE
 FROM alpine/git as git-clone
@@ -23,15 +23,15 @@ ARG COMPONENT=rdf-to-ngsild
 ARG VERSION=develop
 ARG INSTALLATION_PATH=/opt/$PROJECT/$COMPONENT
 
-RUN apk add --no-cache --virtual .build-deps gcc musl-dev linux-headers
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev linux-headers libffi-dev cargo openssl-dev
 
 RUN mkdir -p $INSTALLATION_PATH
 COPY --from=git-clone $INSTALLATION_PATH/requirements.txt /requirements.txt
-RUN pip install --prefix=$INSTALLATION_PATH -r /requirements.txt
-
+RUN pip install --prefix=$INSTALLATION_PATH -r /requirements.txt && chmod +x $INSTALLATION_PATH/main.py || true
 
 # Stage FINAL
-FROM python:3.11-bookworm as final
+# FROM python:3.11-bookworm as final
+FROM python:3.11-alpine as final
 
 ARG PROJECT=aeros
 ARG COMPONENT=rdf-to-ngsild
@@ -50,7 +50,7 @@ COPY --from=pip-requirements $INSTALLATION_PATH /usr/local
 # COPY settings/$VERSION/config.ini $INSTALLATION_PATH/
 # COPY settings/$VERSION/.env $INSTALLATION_PATH/
 
-RUN mv $INSTALLATION_PATH/entrypoint.sh / && chmod +x entrypoint.sh
 
+WORKDIR ${INSTALLATION_PATH}
 # python main.py --from-kafka --to-orionld
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "./main.py", "--from-kafka", "--to-orionld" ]

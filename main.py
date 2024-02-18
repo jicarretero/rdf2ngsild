@@ -1,7 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import json
 import time
+
+import logging
 
 from helpers import get_graph, encode_url, get_graph_from_message
 from conversor.subject_analysis import SubjectAnalysis
@@ -13,12 +15,16 @@ from southbound.kafka_reader import KafkaReader
 from southbound.kafka_writer import KafkaWriter
 from northbound.orionld import OrionLD, AlreadyExistException, NotExistsException
 
+logger = logging.getLogger(__name__)
+
+
 def out_subject_analysis_json(sa):
     j_data = []
     for a in sa:
         j_data.append(a)
 
-    print(json.dumps(j_data) if len(j_data)>1 else json.dumps(j_data[0]))
+    print(json.dumps(j_data) if len(j_data) > 1 else json.dumps(j_data[0]))
+
 
 def out_get_curl(sa):
     for a in sa:
@@ -26,7 +32,7 @@ def out_get_curl(sa):
         print(f"curl 'http://localhost:1026/ngsi-ld/v1/entities/{url}'")
 
 
-def out_subject_analysis_curl(sa, print_get = False):
+def out_subject_analysis_curl(sa, print_get=False):
     for a in sa:
         # print("....... url:", encode_url(a['id']))
         js = json.dumps(a)
@@ -38,11 +44,12 @@ def out_subject_analysis_curl(sa, print_get = False):
             print(f"curl 'http://localhost:1026/ngsi-ld/v1/entities/{url}'")
 
 
-def display_owl(args, g : Graph):
+def display_owl(args, g: Graph):
     ctx = Owl2Context(g)
-    print(json.dumps(ctx.context()))
+    logger.debug(json.dumps(ctx.context()))
 
-def display_rdf(args, g : Graph, context):
+
+def display_rdf(args, g: Graph, context):
     sa = SubjectAnalysis(g)
     sa.add_context(context)
     if args.curl:
@@ -54,7 +61,8 @@ def display_rdf(args, g : Graph, context):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Converts rdf file to ngsi-ld')
+    parser = argparse.ArgumentParser(
+        description='Converts rdf file to ngsi-ld')
 
     parser.add_argument('filename', metavar='filename', type=str, nargs='*',
                         help='Filename containg RDF data to be processed')
@@ -94,7 +102,8 @@ def process_file_inputs(args):
         else:
             display_rdf(args, g, context)
 
-def send_to_orionld(g:Graph) -> None:
+
+def send_to_orionld(g: Graph) -> None:
     ld = OrionLD.instance()
     sa = SubjectAnalysis(g)
     for data in sa:
@@ -105,27 +114,31 @@ def send_to_orionld(g:Graph) -> None:
 
 
 def batch_processing_from_kafka(args):
+    logger.debug("batch_processing_from_kafka")
     reader = KafkaReader()
 
     for msg in reader.consume_messages():
+        logger.debug("Estoy aqui, consumiendo...")
         g = get_graph_from_message(msg)
 
         if args.owl:
             display_owl(args, g)
         if args.to_orionld:
-           send_to_orionld(g)
+            send_to_orionld(g)
         else:
             display_rdf(args, g, context)
+
 
 def write_to_kafka_files(args):
     if args.filename is None:
         return
 
-    print("TO KAFKA DEMO - ", args.filename)
+    logger.debug("TO KAFKA DEMO - ", args.filename)
 
     writer = KafkaWriter()
     max_messages = ConfigTranslator().get_interger("kafka-demo", "max_messages_sent")
-    sleep_time = ConfigTranslator().get_float("kafka-demo", "wait_between_messages")
+    sleep_time = ConfigTranslator().get_float(
+        "kafka-demo", "wait_between_messages")
     sent = 0
 
     while max_messages < 0 or sent < max_messages:
@@ -144,12 +157,11 @@ def write_to_kafka_files(args):
 
 if __name__ == "__main__":
     ConfigTranslator("config.cfg")
-    print(type(OrionLD.instance()))
-    print(type(OrionLD()))
+    logger.debug(type(OrionLD.instance()))
+    logger.debug(type(OrionLD()))
 
     args = parse_args()
     context = None
-
 
     if args.from_kafka:
         batch_processing_from_kafka(args)
