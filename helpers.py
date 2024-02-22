@@ -2,6 +2,13 @@ from rdflib import Graph
 from conversor.subjects import Subject
 
 def get_graph_from_message(message) -> Graph:
+    """
+    Given a message in a String, this function will return a Graph parsing the message. It will be used to read data
+    from Kakfa.
+
+    :param message: message to be parsed as RDF
+    :return: Graph representation of the RDF input data.
+    """
     g = Graph()
     g.parse(data=message)
     return g
@@ -20,6 +27,12 @@ def get_graph(filename) -> Graph:
 
 
 def encode_url(uri_string: str) -> str:
+    """
+    This function will provide an URL properly encoded to be sent as a paramater in the HTTP repests.
+
+    :param uri_string:
+    :return:
+    """
     result = ''
     accepted = [c for c in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~'.encode('utf-8')]
     for char in uri_string.encode('utf-8'):
@@ -28,6 +41,13 @@ def encode_url(uri_string: str) -> str:
 
 
 def apply_filters(subject: Subject, filter: set) -> bool:
+    """
+    Whis function will filter a Subject according to a set of conditions.
+
+    :param subject:
+    :param filter:
+    :return: boolean - Whether if it is valid or not.
+    """
     if filter is None:
         return True
     r = True

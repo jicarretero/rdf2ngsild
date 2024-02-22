@@ -2,8 +2,26 @@ from config_translator import ConfigTranslator
 
 
 def std_name_only(data: str) -> str:
+    """
+    Transform a subject to its name only, example -
+
+    Given "https://whatever.url/somedirectory/somesubdirectory#the_name
+    Returns "the_name"
+
+    :param data:
+    :return:
+    """
     return data[data.find("#")+1:]
 def std_urn_name(data: str) -> str:
+    """
+    Transform a subject to some calculated URN, example -
+
+    Given "https://whatever.url/somedirectory/somesubdirectory#the_name
+    Returns "urn:ngsi-ls:somesubdirectory:the_name"
+
+    :param data:
+    :return:
+    """
     import os.path
     return "urn:ngsi-ld:" + os.path.basename(data).replace("#", ":")
 
@@ -14,6 +32,14 @@ def std_type_name(data: str) -> str:
 
 
 def global_transformer(f_name: str, data: str) -> str:
+    """
+    Transforms the name into some value, depending on the function to be used (the function name is the 1st parameter).
+    If nothing valid is there, the same data is returned. This name can be configured in the configuration file.
+
+    :param f_name:
+    :param data:
+    :return:
+    """
     if f_name == "":
         return data
 
