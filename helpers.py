@@ -1,6 +1,11 @@
+import functools
+import sys
 from rdflib import Graph
+
 from conversor.subjects import Subject
 
+
+@functools.cache
 def get_graph_from_message(message) -> Graph:
     """
     Given a message in a String, this function will return a Graph parsing the message. It will be used to read data
@@ -11,7 +16,10 @@ def get_graph_from_message(message) -> Graph:
     """
     g = Graph()
     g.parse(data=message)
-    return g
+    # Skolemize graph to transform BNodes into URIRef
+    skol_g = g.skolemize()
+    return skol_g
+
 
 def get_graph(filename) -> Graph:
     """
@@ -23,8 +31,9 @@ def get_graph(filename) -> Graph:
     g = Graph()
     with open(filename, "r", encoding='UTF-8') as f:
         g.parse(file=f)
-    return g
-
+    # Skolemize graph to transform BNodes into URIRef
+    skol_g = g.skolemize()
+    return skol_g
 
 def encode_url(uri_string: str) -> str:
     """
@@ -38,7 +47,6 @@ def encode_url(uri_string: str) -> str:
     for char in uri_string.encode('utf-8'):
         result += chr(char) if char in accepted else '%{}'.format(hex(char)[2:]).upper()
     return result
-
 
 def apply_filters(subject: Subject, filter: set) -> bool:
     """
@@ -59,3 +67,12 @@ def apply_filters(subject: Subject, filter: set) -> bool:
                 break
     return r
 
+def eprint(*args, **kwargs):
+    """
+    Prints message (same as print) to stderr.
+
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    print(*args, file=sys.stderr, **kwargs)

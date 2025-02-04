@@ -1,7 +1,7 @@
 import os
 
 from config_translator import ConfigTranslator
-from helpers import encode_url
+from transformer import encode_url
 from requests import post, get, patch, Session
 import json
 import os
@@ -96,13 +96,15 @@ class BrokerLD:
         :return:
         """
         cntx = None
+        payload_id = None
         try:
             cntx = payload.pop("@context")
+            payload_id = payload.pop('id')
         except KeyError:
             pass
-        id_entity = encode_url(payload['id'])
+        id_entity = encode_url(payload_id)
         headers = {'content-type': 'application/json'}
-        url = self.url + id_entity
+        url = self.url + id_entity + "/attrs"
         try:
             r = self.session.patch(
                 url=url, headers=headers, data=json.dumps(payload))
@@ -110,6 +112,8 @@ class BrokerLD:
         finally:
             if cntx:
                 payload["@context"] = cntx
+            if payload_id:
+                payload["id"] = payload_id
         return r
 
 

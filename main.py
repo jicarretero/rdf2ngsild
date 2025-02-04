@@ -9,7 +9,7 @@ import asyncio
 from multiprocessing import Pool
 import logging
 from rdflib import Graph
-from helpers import get_graph, encode_url, get_graph_from_message
+from helpers import get_graph, get_graph_from_message, encode_url
 from conversor.subject_analysis import SubjectAnalysis
 from conversor.owl_to_context import Owl2Context
 from config_translator import ConfigTranslator
@@ -112,6 +112,10 @@ def parse_args():
     parser.add_argument('--to-ngsild-broker', required=False,
                         action='store_true',
                         help='If this parameter is set, data will be sent to NGSI-LD Broker')
+    parser.add_argument('--single_ngsild', required=False,
+                        action='store_true',
+                        help='If this parameter is set, data will be added to an object and it will be displayed as '
+                             'an array of objects')
     parser.add_argument('--to-null', required=False,
                         action='store_true',
                         help='If this parameter is set, data will be "discarded" after processing it')
@@ -121,6 +125,9 @@ def parse_args():
     parser.add_argument('--feed-kafka-demo', required=False,
                         action='store_true',
                         help='Demo writer to send messages to kafka for testing. It needs some files as parameters')
+    parser.add_argument('--display-rdf', required=False,
+                        help="Just display rdf output in a simple way", 
+                        action='store_true')
     parser.add_argument('--benchmark', required=False,
                         action='store_true',
                         help='This benchmark will read from Kaka at most (from config file) kafka-demo.max_messages_sent')
@@ -131,18 +138,20 @@ def parse_args():
     return parser.parse_args()
 
 
-def process_file_inputs(args):
+def process_file_inputs(args, context = None):
+
     if args.filename is None:
         return
 
     for filename in args.filename:
         g = get_graph(filename)
-        context = None
 
         if args.owl:
             display_owl(args, g)
-        else:
+        elif args.display_rdf:
             display_rdf(args, g, context)
+        else:
+            send(g)
 
 
 def send(g: Graph):
@@ -157,6 +166,8 @@ def send(g: Graph):
     for data in sa:
         nb.send(data)
 
+    for fb in nb.bounds_to_flush:
+        print(fb.json_data())
 
 def use_graph(msg):
     """
@@ -166,7 +177,10 @@ def use_graph(msg):
     :return:
     """
     g = get_graph_from_message(msg)
-    send(g)
+    try:
+        send(g)
+    except:
+        logger.warning("Error with msg")
 
 
 def thr_processing_from_kafka(args):
@@ -267,10 +281,11 @@ def main():
     elif args.feed_kafka_demo:
         write_to_kafka_files(args)
     else:
+        context = None
         if args.owl_file:
             g = get_graph(args.owl_file)
             context = Owl2Context(g).context()
-        process_file_inputs(args)
+        process_file_inputs(args, context)
     end = time.time()
     if args.benchmark:
         print()

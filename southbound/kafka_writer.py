@@ -8,12 +8,10 @@ import uuid
 
 class KafkaWriter:
     def __init__(self):
-        # Producer configuration
-        self.producer_config = {
-            # Replace with the correct address if necessary
-            'bootstrap.servers': ConfigTranslator().get_string("kafka-client", "servers"),
-        }
-
+        """
+        Commodity class for testing. This will write data to a kafka topic depeding on the parameters configurd in the
+        cofiguration file.
+        """
         self.bootstrap_servers = ConfigTranslator().get_string("kafka-client", "servers")
 
         # Topic name
@@ -21,9 +19,12 @@ class KafkaWriter:
 
         self.producer = KafkaProducer(bootstrap_servers=self.bootstrap_servers)
 
-        # self.__remove_topics()
-
     def __remove_topics(self):
+        """
+        Remove topics from kafka.
+
+        :return:
+        """
         print("Removing topics!")
         ac = KafkaAdminClient(bootstrap_servers=self.bootstrap_servers)
         ac.delete_topics([self.topic_name])
@@ -33,9 +34,20 @@ class KafkaWriter:
         # ac.delete_topics([self.topic_name])
 
     def uuid(self):
+        """
+
+        :return: uuid64 as string.
+        """
         return str(uuid.uuid4())
 
     def on_delivery(self, err, msg):
+        """
+        Method call when the message is delivered to a kafka queue.
+
+        :param err:
+        :param msg:
+        :return:
+        """
         if err is not None:
             print('Delivery failed: {}'.format(err))
         else:
@@ -43,12 +55,14 @@ class KafkaWriter:
                 msg.topic(), msg.partition()))
 
     def produce_message(self, data: str):
+        """
+        Send a message to the Kafka queue.
+
+        :param data:
+        :return:
+        """
         # Sending a message to the topic (synchronous)
         ba = data.encode('utf-8')
-        print("Writing data to ", self.topic_name)
         self.producer.send(topic=self.topic_name, value=ba)
         self.producer.flush()
 
-
-if __name__ == "__main__":
-    KafkaWriter().produce_message()

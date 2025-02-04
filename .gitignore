@@ -5,3 +5,4 @@ __pycache__
 config.yml
 /.idea
 owl2jsonld-0.2.1-standalone.jar
+/.vscode

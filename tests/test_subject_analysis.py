@@ -2,7 +2,7 @@ import unittest
 from rdflib import Graph
 from conversor.predicates import Predicates
 from conversor.subjects import Subject, BNodeFoundException
-
+from config_translator import ConfigTranslator
 
 class TestSubjectAnalysis(unittest.TestCase):
 
@@ -35,6 +35,7 @@ class TestSubjectAnalysis(unittest.TestCase):
         assert kv == pred_obj.value
 
     def test_predicates_bnode_value(self):
+        ConfigTranslator("./configs/test_config.cfg")
         g = self.__get_graph("examples/simple-sample-bnode.ttl")
         subjects = {}
         for sub, pred, obj in g:

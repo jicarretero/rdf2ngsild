@@ -1,7 +1,7 @@
 import os
 
 from config_translator import ConfigTranslator
-from helpers import encode_url
+from transformer import encode_url
 from requests import post, get, patch, Session
 import json
 import os

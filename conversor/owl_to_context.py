@@ -16,8 +16,16 @@ known_namespaces = { str(BRICK), str(DCMITYPE), str(DCAM),
                      }
 
 class Owl2Context:
+    """
+    Class which interprets an onthology and it will produce data for the @context of the ngsild output.
+
+    """
     @functools.cache
     def __init__(self, g : Graph):
+        """
+        It will analyze an alrady built Graph
+        :param g:
+        """
         self.graph = g
         self.namespaces = set()
         self.long_names = {}
@@ -33,6 +41,13 @@ class Owl2Context:
                 self.long_names[sn] = str(ln)
 
     def context(self, filter=None):
+        """
+        Produces the context from the Onthology, however, it will apply filters if any filter is needed to skip
+        certain data which is not required to be represented in the context
+
+        :param filter:
+        :return:
+        """
         res = {}
         short_names = set()
         for k, v in self.subject_analysis.subjects.items():

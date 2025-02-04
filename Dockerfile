@@ -53,4 +53,4 @@ COPY --from=pip-requirements $INSTALLATION_PATH /usr/local
 
 WORKDIR ${INSTALLATION_PATH}
 # python main.py --from-kafka --to-orionld
-ENTRYPOINT [ "./main.py", "--from-kafka", "--to-orionld" ]
+ENTRYPOINT [ "./main.py", "--from-kafka", "--to-ngsild-broker", "--async-run" ]

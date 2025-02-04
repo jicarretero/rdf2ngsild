@@ -1,67 +1,61 @@
-# RDF to NGSI-LD
+# RDF to NGSI-LD Translator
 
+This Python project implements a generic translator from RDF to NGSI-LD.
 
+The work takes inspiration from[rdflib](https://rdflib.readthedocs.io/en/stable/index.html) plugins that store RDF data in backends like Neo4j (https://github.com/neo4j-labs/rdflib-neo4j).
 
-## Getting started
+In this sense, this project provides an rdflib plugin where an NGSI-LD Context Broker works as the storage backend for RDF data. Additionally, the translator supports the ingestion of streams of RDF data via Kafka.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Translation Rules
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+The following set of rules are applied to translate the RDF data model (triples) into the NGSI-LD data model (property graph):
 
-## Add your files
+- **Subject**:
+  - Subjects represented by IRIs map directly to an NGSI-LD Entities. The URI of the subject in the RDF triple is the URI of the NGSI-LD Entity.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+  > :warning: WARNING: This approach does not follow the convention recommended by ETSI CIM, which goes "urn:ngsi-ld:\<entity-type>:\<identifier>". The reason for doing this is to facilitate interoperability between RDF and NGSI-LD.
+
+  - `Blank nodes` (or `BNodes`) are skolemized as described in Section 3.5 of [RDF 1.1 Concepts and Abstract Syntax](https://www.w3.org/TR/rdf11-concepts/#section-blank-nodes).
+    By generating Skolem IRIs, blank nodes of an RDF graph can be transformed into NGSI-LD
+    Entities and stored in the NGSI-LD Context Broker.
+
+- **Predicate**:
+  - **RDF classes**
+    - `a` or `rdf:type` predicate maps to the NGSI-LD Entity Type. For example:
+    the RDF triple `<http://example.org/people/Bob> a foaf:Person` translates into an NGSI-LD Entity of `foaf:Person` type, and URI `http://example.org/people/Bob`.
+
+    - If no `rdf:type` predicate is found for the subject in the RDF graph, then the Entity Type will be set to `http://www.w3.org/2000/01/rdf-schema#Class` by default. As described in Section 2.2 of [RDF Schema 1.1](https://www.w3.org/TR/rdf-schema/#ch_class), the `rdfs:Class` represent the class of RDF classes.
+
+  - **RDF Datatype property** maps to an NGSI-LD Property. A special treatment is required when the literal of the predicate uses `xsd:datetime`. In this case the resulting NGSI-LD Property must follow the special format:
+
+    ```json
+        "myProperty": {
+            "type": "Property", "value": {
+                "@type": "DateTime",
+                "@value": "2018-12-04T12:00:00Z"
+            }
+        }
+    ```
+
+  - **RDF Object property** maps to an NGSI-LD Relationship. The target of the Relationship is the URI of the object in the RDF triple.
+
+- **Namespaces**: There is no need to create specific `@context` for translating to NGSI-LD. The resulting NGSI-LD Entity can just used expanded the URIs. This approach is easier to maintain as avoids maintaining `@context` files.
+
+  Optionally, If the ingested RDF data includes a definition of namespaces with prefixes, then this information could be used to generate the `@context` for the translated NGSI-LD Entity. The resulting `@context` can be send along the NGSI-LD payload or stored elsewhere and reference via Link header. The selected approach will depend on the use case and the developer's implementation.
+
+## Translation Modes
+
+The translator could be configured to expect `batches` of RDF data, instead of `streaming` 
+events. In batching mode, the translator can analyze all RDF triples for the same subject, 
+bundle the datatype and object properties, and
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.aeros-project.eu/wp4/t4.2/rdf-to-ngsi-ld.git
-git branch -M main
-git push -uf origin main
+python main.py --to-kafka-demo tests/examples/simple-sample-relationship.ttl tests/examples/containerlab-graph.nt
 ```
 
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.aeros-project.eu/wp4/t4.2/rdf-to-ngsi-ld/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+produce a complete NGSI-LD Entity with a set of Properties and Relationships.
+This approach can improve performance as less NGSI-LD requests are sent
+to create the Entities in the Context Broker.
 
 ## Installation
 ### Prerequisites
@@ -77,82 +71,372 @@ pip install -r requirements.txt
 ```
 
 ### Docker installation
-Docker installation will come in a few days.
+The Docker image can be built using the following command:
+
+```bash
+sudo docker image build -t aeros-project/rdf-to-ngsi-ld:latest .
+```
 
 ## Usage
-The main idea of the program  is reading data from a kafka topic and writing to on OrionLD, converting the Kafka input in RDF to NGSI-LD understood by OrionLD
+The application reads RDF triples from a Kafka topic and converts them to NGSI-LD, writing the output to an NGSI-LD Context Broker (like Orion-LD): 
 
-```
-python main.py --from-kafka --to-orionld
+```bash
+python main.py --from-kafka --to-ngsild-broker
 ```
 
 ## Configuration file
-This is an example of a configuration file
-```
-# Transformations to URN
+This is an example of a configuration file:
+
+```ini
+# Default configurations
+[default]
+## A list for the context - Just formatted like an array. This is to set the default context
+context = ["https://fiware.github.io/data-models/context.jsonld"]
+
+## context = ["https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"]
+
+# Transformations to URN (as ETSI recommends.)
 [urn-transform]
+##
+## This refers as how the "id" property of the entity is calculated_
+##
 ## urn = std_urn_name - If this is the value, the id of the enties will be calculated from
-##                      the URI value of RDF's file, something similar to this: 
+##                      the URI value of RDF's file, something similar to this:
 ##                      id = urn:xxx:typeentity:identity
+## Any other value will not transform anything
 urn = std_urn_name_no
 
 [type-transform]
+##
+## This refers as how the "type" property of the entity is calculated
+##
 ## urn = std_type_name - If this is the value, the type will be calculated removing anything
 ##                       before the last ":" character. It can be other things and the name
 ##                       will be left as URI.
-urn = std_type_name
+## urn = std_default_type - Sets default value according to parameter default_type_value
+##
+## urn = std_type_default
+urn = std_type_default
 
+retype_function = std_name_only
+default_type_value = rdfs:resource
+
+[predicates]
+## format=long  -- Then a complete URL (if available) will be used for the properties of the 
+##                            entities
+## format=prefix -- If the type exists as <prefix>:<name> this will be used to be set in the
+##                            entities
+## format=""       -- Or any value, then only a short name will be used.
+##
+format=""
+
+[encode-transform]
+# This is only used when data is written on stdout. To help user to watch the URL in the
+# context broker of the new entity.
+#
+# Encode or not encode the ID of the of the entity (used mainly for patches) -- If we use a
+# URL as ID for the entity in Orion-ld, we need to encode it in order to put the ID in
+# the URL as a paramter for the query.
+#
+# If the encoder here is as shown, then the encoder will encode the ID
+# encoder = encode_url_as_http
+#
+# If we don't need to encode, we can use (this is the default behaviour):
+# encoder = encode_url_not
+#
+encoder = encode_url_as_http
 
 [kafka-client]
-## Cofiguration for de Kafka reader. It will connect to a topic in a server
+## Cofiguration for the Kafka reader. It will connect to a topic in a server
+## It is used when the southbound is Kafka / RedPanda
 servers = localhost:19092
 topic = rdf-topic
 
-# Timeout of reader. -1 means infinte. 
+# Timeout of reader. -1 means infinite.
 reader_timeout = -1
 
-[orionld]
-### OrionLD basic URL to connect to when data is sent to OrionLD.
+[brokerld]
+### NGSI-LD Broker basic URL to connect to when data is sent to NGSI-LD Broker.
+## Used only when the northbound is ngsi-ld broker.
+##
+## url -- is the URL where the NGIS-LD Broker is waiting for connections
+## pool_size -- The number of processes used to dispatch data to the NGSI-LD Broker
+##              Test must be done for fine tuning, but too low and too high values doesn't get
+##              the best performance out of the transformer
+## 
 url = http://localhost:1026
+pool_size = 1
 
 [kafka-demo]
 ## This is for testing purposes. It is used with the --to-kafka parameter and it will
 ## say how many messages are going to be sent, and the waiting time between them.
 
 ## Max number of messages to be sent (<0 means infinity)
-max_messages_sent = 100000
+max_messages_sent = 10000
 
 ## thread.sleep between messages. It will send a message every... seconds
-wait_between_messages = 10
-
+wait_between_messages = 0
 ```
 
+## Testing purposes.
 
-### Testing purposes
-For testing purposes, you could write some data to the Kafka topic where the application reads from, example:
+### Using Kafka / Red Panda
+The idea of writing this translator started from the need to read RDF data from a queue, 
+transforming it to NGSI-LD and writing that result to a NGSI-LD Context broker. So, this example 
+will cover how to test this.
+
+#### Feeding the Queue (preparing the test)
+For testing purposes, the application can write data to a Kafka queue topic. This is the part of 
+the configuration needed to write data to a kafka queue:
+```ini
+[kafka-client]
+## Cofiguration for the Kafka reader. It will connect to a topic in a server
+## It is used when the southbound is Kafka / RedPanda
+servers = localhost:19092
+topic = rdf-topic
+
+# Timeout of reader. -1 means infinite.
+reader_timeout = -1
+
+[kafka-demo]
+## This is for testing purposes. It is used with the --to-kafka parameter and it will
+## say how many messages are going to be sent, and the waiting time between them.
+
+## Max number of messages to be sent (<0 means infinity). In this case, we'll write 10000 messages
+## in the queue
+max_messages_sent = 10000
+
+## thread.sleep between messages. It will send a message every... seconds
+wait_between_messages = 0
 ```
-python main.py --to-kafka-demo tests/examples/simple-sample-relationship.ttl tests/examples/containerlab-graph.nt
+
+And we can execute the following command:
+```bash
+python main.py --feed-kafka-demo tests/examples/simple-sample-relationship.ttl 
+tests/examples/containerlab-graph.nt
 ```
 
+The translator will insert in the kafka queue defined in the `ini` file behind `[kafka-client]
+`the corresponding values.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+#### Reading that data / benchmarking
+We can configure the **translator** to read from the Kafka queue (where we previously inserted 
+that data) and, let's say we can send that a NGSI-LD Broker listening on port 1026. We want to 
+know how long did it take to read all the messages from the queue and write them in the Broker.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+The relevant part of the `ini` file will be:
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+```ini
+[brokerld]
+### NGSI-LD Broker basic URL to connect to when data is sent to NGSI-LD Broker.
+## Used only when the northbound is ngsi-ld broker.
+## 
+## url -- is the URL where the NGIS-LD Broker is waiting for connections
+## pool_size -- The number of processes used to dispatch data to the NGSI-LD Broker
+##              Test must be done for fine tuning, but too low and too high values doesn't get
+##              the best performance out of the transformer. This only works if the transformer
+##              is started with --async-run
+## 
+url = http://localhost:1026
+pool_size = 15
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+[kafka-client]
+## Cofiguration for the Kafka reader. It will connect to a topic in a server
+## It is used when the southbound is Kafka / RedPanda
+servers = localhost:19092
+topic = rdf-topic
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+# Timeout of reader. -1 means infinite.
+reader_timeout = -1
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+[kafka-demo]
+## This is for testing purposes. It is used with the --to-kafka parameter and it will
+## say how many messages are going to be sent, and the waiting time between them.
 
-## License
-For open source projects, say how it is licensed.
+## Max number of messages to be sent (<0 means infinity). In this case, we'll write 10000 messages
+## in the queue
+max_messages_sent = 10000
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## thread.sleep between messages. It will send a message every... seconds
+wait_between_messages = 0
+```
+
+So, in order to perform the benchmarking we could run the transformer:
+
+```
+❯ ./main.py  --async-run --from-kafka --to-ngsild-broker --benchmark
+
+TIME: 7.603782892227173
+```
+
+It took 7.6 seconds to read 10000 (as show in `max_messages_sent`) and writing them to a broker. 
+This roughly means 1315 messages per second.
+
+If we don't run that with several cores:
+
+```
+❯ ./main.py  --from-kafka --to-ngsild-broker --benchmark
+
+TIME: 143.14611268043518
+```
+
+It is much slower, less than 70 messages per second.
+
+
+## Meaning of the "transformations"
+Let's use as a simple RDF for the examples the following RDF file:
+
+```rdf
+@prefix aeros: <https://w3id.org/aerOS/continuum#> .
+@prefix aerdcat: <https://w3id.org/aerOS/data-catalog#> .
+@prefix a4bdg: <https://w3id.org/aerOS/building#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <https://example.org/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@base <https://example.org/> .
+# From here on... errors because these were not added.
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix seas: <https://w3id.org/seas/>.  # Smart Energy Aware Systems
+@prefix bot:  <https://w3id.org/bot#> .  # Building Topology Ontology
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+ex:DP101 a aerdcat:DataProduct ;
+    dcterms:identifier "Data Product 101" ;
+    dcterms:description "Contains data related to the inventory of desks" ;
+    dcat:keyword "network lab DEVNET",
+                 "Marousi" ;
+    dcat:theme a4bdg:Desk ;
+    aerdcat:mapping ex:TM101 ;
+    dcterms:publisher ex:UserAAA ;
+    dcat:distribution ex:Dist101 .
+```
+
+In every of the following examples I'll change the config file but I'll execute the very same 
+command:
+```bash
+./main.py --print tests/examples/simple-sample-test-expansions.ttl | jq .
+```
+### The `ìd` property: `urn_transform` section in config file
+This parameter only affects the `id` property of the entity
+
+#### Get the very long name (an url)
+```ini
+[urn-transform]
+urn = std_urn_name_no
+```
+
+The output will be (piped to `jq '{ "id": .id}'`)
+```json
+{
+  "id": "https://example.org/DP101"
+}
+```
+
+This also affects the **Relationships**, for example
+```json lines
+....
+  "distribution": {
+    "type": "Relationship",
+    "object": "https://example.org/Dist101"
+  },
+....
+```
+#### Get urn as suggested by ETSI
+```ini
+[urn-transform]
+urn = std_urn_name
+```
+The output will be (piped to `jq '{ "id": .id}'`)
+```json
+{
+  "id": "urn:ngsi-ld:DP101"
+}
+```
+
+And of course, in Relationship lines:
+```json lines
+....
+   "distribution": {
+      "type": "Relationship",
+      "object": "urn:ngsi-ld:Dist101"
+   },
+....
+```
+
+### The `type` property: `type_transform` section in config file
+There is a default value when the `type` can't be deducted from the RDF file. All data which 
+type is unknown will be set to the value set in the `default_type_value`.
+
+So, the interesting variables are `urn` and `retype_function`.
+```ini
+[type-transform]
+urn = std_type_default
+retype_function = std_name_only
+
+# Use expanded URI for rdfs:Class by default, and compress if @context is provided
+default_type_value = http://www.w3.org/2000/01/rdf-schema#Class
+```
+
+#### Get the simples name for `type`
+```ini
+[type-transform]
+retype_function = std_name_only
+```
+
+The `type` property will be shown as:
+```json
+{
+  "type": "DataProduct"
+}
+```
+
+#### Get the `type` as etsi-urn
+```ini
+[type-transform]
+retype_function = std_urn_name
+```
+
+The `type` property will be shown as:
+```json
+{
+    "type": "urn:ngsi-ld:data-catalog:DataProduct"
+}
+```
+
+#### Get the `type` as default type (possibly url)
+```ini
+[type-transform]
+retype_function = std_default_type
+```
+
+The `type` property will be shown as:
+```json
+{
+    "type": "https://w3id.org/aerOS/data-catalog#DataProduct"
+}
+```
+
+### Get property names
+The property names could be a long name (URL), an abbreviated name (rdfs:whatever) or a very 
+short name.
+
+```ini
+[predicates]
+## format=long  -- Then a complete URL (if available) will be used for the properties of the 
+##                            entities
+## format=prefix -- If the type exists as <prefix>:<name> this will be used to be set in the
+##                            entities
+## format=""       -- Or any value, then only a short name will be used.
+##
+format=""
+```
+
+We can have 3 possible values for a property. Let's consider the property `description`, it can 
+take one of the 3 names:
+
+* `description`  if `format = ""`
+* `dcterms:description`  if `format = prefix`
+* `http://purl.org/dc/terms/description` if `format = long`
+
