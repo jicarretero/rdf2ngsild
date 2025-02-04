@@ -2,7 +2,7 @@
 # author: joseignacio.carretero <joseignacio.carretero@fiware.org>
 
 # Stage GIT CLONE
-FROM alpine/git as git-clone
+FROM alpine/git AS git-clone
 
 ARG PROJECT=aeros
 ARG COMPONENT=rdf-to-ngsild
@@ -16,11 +16,11 @@ RUN git clone https://github.com/jicarretero/rdf2ngsild.git --branch $VERSION $I
 
 
 # Stage PIP REQUIREMENTS
-FROM python:3.11-alpine as pip-requirements
+FROM python:3.11-alpine AS pip-requirements
 
 ARG PROJECT=aeros
 ARG COMPONENT=rdf-to-ngsild
-ARG VERSION=develop
+ARG VERSION=main
 ARG INSTALLATION_PATH=/opt/$PROJECT/$COMPONENT
 
 RUN apk add --no-cache --virtual .build-deps gcc musl-dev linux-headers libffi-dev cargo openssl-dev
@@ -31,11 +31,11 @@ RUN pip install --prefix=$INSTALLATION_PATH -r /requirements.txt && chmod +x $IN
 
 # Stage FINAL
 # FROM python:3.11-bookworm as final
-FROM python:3.11-alpine as final
+FROM python:3.11-alpine AS final
 
 ARG PROJECT=aeros
 ARG COMPONENT=rdf-to-ngsild
-ARG VERSION=develop
+ARG VERSION=main
 ARG INSTALLATION_PATH=/opt/$PROJECT/$COMPONENT
 
 LABEL maintainer="joseignacio.carretero@fiware.org"
