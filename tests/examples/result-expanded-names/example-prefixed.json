@@ -1,0 +1,180 @@
+[
+  {
+    "id": "https://example.org/CB1",
+    "type": "aerdcat:ContextBroker",
+    "aerdcat:servesDataProduct": {
+      "type": "Relationship",
+      "object": "https://example.org/DP101"
+    },
+    "dcat:endpointURL": {
+      "type": "Relationship",
+      "object": "http://context-broker-1:8080/ngsi-ld/"
+    },
+    "dcterms:conformsTo": {
+      "type": "Relationship",
+      "object": "https://www.etsi.org/deliver/etsi_gs/CIM/001_099/009/01.08.01_60/gs_CIM009v010801p.pdf"
+    },
+    "aeros:domain": {
+      "type": "Relationship",
+      "object": "https://example.org/DomainA"
+    },
+    "@context": {
+      "aeros": "https://w3id.org/aerOS/continuum#",
+      "aerdcat": "https://w3id.org/aerOS/data-catalog#",
+      "a4bdg": "https://w3id.org/aerOS/building#",
+      "dcat": "http://www.w3.org/ns/dcat#",
+      "dcterms": "http://purl.org/dc/terms/",
+      "ex": "https://example.org/",
+      "org": "http://www.w3.org/ns/org#"
+    }
+  },
+  {
+    "id": "https://example.org/DomainACatalog",
+    "type": "aerdcat:Catalog",
+    "dcterms:title": {
+      "type": "Property",
+      "value": "Domain A Catalog"
+    },
+    "aeros:domain": {
+      "type": "Relationship",
+      "object": "https://example.org/DomainA"
+    },
+    "aerdcat:contextBroker": {
+      "type": "Relationship",
+      "object": "https://example.org/CB1"
+    },
+    "aerdcat:dataProduct": {
+      "type": "Relationship",
+      "object": "https://example.org/DP101"
+    },
+    "@context": {
+      "aeros": "https://w3id.org/aerOS/continuum#",
+      "aerdcat": "https://w3id.org/aerOS/data-catalog#",
+      "a4bdg": "https://w3id.org/aerOS/building#",
+      "dcat": "http://www.w3.org/ns/dcat#",
+      "dcterms": "http://purl.org/dc/terms/",
+      "ex": "https://example.org/",
+      "org": "http://www.w3.org/ns/org#"
+    }
+  },
+  {
+    "id": "https://example.org/Dist101",
+    "type": "dcat:Distribution",
+    "dcat:accessURL": {
+      "type": "Relationship",
+      "object": "http://context-broker-1:8080/ngsi-ld/"
+    },
+    "dcterms:mediaType": {
+      "type": "Relationship",
+      "object": "https://www.iana.org/assignments/media-types/application/ld+json"
+    },
+    "dcat:accessService": {
+      "type": "Relationship",
+      "object": "https://example.org/CB1"
+    },
+    "@context": {
+      "aeros": "https://w3id.org/aerOS/continuum#",
+      "aerdcat": "https://w3id.org/aerOS/data-catalog#",
+      "a4bdg": "https://w3id.org/aerOS/building#",
+      "dcat": "http://www.w3.org/ns/dcat#",
+      "dcterms": "http://purl.org/dc/terms/",
+      "ex": "https://example.org/",
+      "org": "http://www.w3.org/ns/org#"
+    }
+  },
+  {
+    "id": "https://example.org/UserAAA",
+    "type": "aeros:User",
+    "org:member": {
+      "type": "Relationship",
+      "object": "https://example.org/MemberUserAAA"
+    },
+    "@context": {
+      "aeros": "https://w3id.org/aerOS/continuum#",
+      "aerdcat": "https://w3id.org/aerOS/data-catalog#",
+      "a4bdg": "https://w3id.org/aerOS/building#",
+      "dcat": "http://www.w3.org/ns/dcat#",
+      "dcterms": "http://purl.org/dc/terms/",
+      "ex": "https://example.org/",
+      "org": "http://www.w3.org/ns/org#"
+    }
+  },
+  {
+    "id": "https://example.org/DP101",
+    "type": "aerdcat:DataProduct",
+    "dcat:theme": {
+      "type": "Relationship",
+      "object": "https://w3id.org/aerOS/building#Desk"
+    },
+    "dcat:keyword": {
+      "type": "Property",
+      "value": [
+        "Marousi",
+        "network lab DEVNET"
+      ]
+    },
+    "dcterms:publisher": {
+      "type": "Relationship",
+      "object": "https://example.org/UserAAA"
+    },
+    "aerdcat:mapping": {
+      "type": "Relationship",
+      "object": "https://example.org/TM101"
+    },
+    "dcterms:description": {
+      "type": "Property",
+      "value": "Contains data related to the inventory of desks"
+    },
+    "dcterms:identifier": {
+      "type": "Property",
+      "value": "Data Product 101"
+    },
+    "dcat:distribution": {
+      "type": "Relationship",
+      "object": "https://example.org/Dist101"
+    },
+    "@context": {
+      "aeros": "https://w3id.org/aerOS/continuum#",
+      "aerdcat": "https://w3id.org/aerOS/data-catalog#",
+      "a4bdg": "https://w3id.org/aerOS/building#",
+      "dcat": "http://www.w3.org/ns/dcat#",
+      "dcterms": "http://purl.org/dc/terms/",
+      "ex": "https://example.org/",
+      "org": "http://www.w3.org/ns/org#"
+    }
+  },
+  {
+    "id": "https://example.org/OrganizationA",
+    "type": "org:Organization",
+    "@context": {
+      "aeros": "https://w3id.org/aerOS/continuum#",
+      "aerdcat": "https://w3id.org/aerOS/data-catalog#",
+      "a4bdg": "https://w3id.org/aerOS/building#",
+      "dcat": "http://www.w3.org/ns/dcat#",
+      "dcterms": "http://purl.org/dc/terms/",
+      "ex": "https://example.org/",
+      "org": "http://www.w3.org/ns/org#"
+    }
+  },
+  {
+    "id": "https://example.org/MemberUserAAA",
+    "type": "org:Membership",
+    "org:role": {
+      "type": "Relationship",
+      "object": "https://w3id.org/aerOS/data-catalog#DataProductOwner"
+    },
+    "org:organization": {
+      "type": "Relationship",
+      "object": "https://example.org/OrganizationA"
+    },
+    "@context": {
+      "aeros": "https://w3id.org/aerOS/continuum#",
+      "aerdcat": "https://w3id.org/aerOS/data-catalog#",
+      "a4bdg": "https://w3id.org/aerOS/building#",
+      "dcat": "http://www.w3.org/ns/dcat#",
+      "dcterms": "http://purl.org/dc/terms/",
+      "ex": "https://example.org/",
+      "org": "http://www.w3.org/ns/org#"
+    }
+  }
+]

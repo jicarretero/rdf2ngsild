@@ -1,0 +1,70 @@
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user4> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/User> .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user6> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/User> .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/User> .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/User> .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/User> .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user5> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/User> .
+<http://www.w3.org/ns/org#example> <http://purl.org/dc/terms/title> "Example Organization" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user3> <http://xmlns.com/foaf/0.1/familyName> "Number 3" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user4> <http://xmlns.com/foaf/0.1/familyName> "Number 4" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user5> <http://xmlns.com/foaf/0.1/familyName> "Number 5" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user6> <http://xmlns.com/foaf/0.1/familyName> "Number 6" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user2> <http://xmlns.com/foaf/0.1/familyName> "Number 2" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user1> <http://xmlns.com/foaf/0.1/familyName> "Number 1" .
+<http://www.w3.org/ns/org#membership_user2_developer> <http://www.w3.org/ns/org#role> <http://www.w3.org/ns/org#developer> .
+<http://www.w3.org/ns/org#membership_user1_financial> <http://www.w3.org/ns/org#role> <http://www.w3.org/ns/org#financial> .
+<http://www.w3.org/ns/org#membership_user3_admin> <http://www.w3.org/ns/org#role> <http://www.w3.org/ns/org#admin> .
+<http://www.w3.org/ns/org#membership_user1_admin> <http://www.w3.org/ns/org#role> <http://www.w3.org/ns/org#admin> .
+<http://www.w3.org/ns/org#membership_user1_developer> <http://www.w3.org/ns/org#role> <http://www.w3.org/ns/org#developer> .
+<http://www.w3.org/ns/org#membership_user4_financial> <http://www.w3.org/ns/org#role> <http://www.w3.org/ns/org#financial> .
+<http://www.w3.org/ns/org#membership_user5_support> <http://www.w3.org/ns/org#role> <http://www.w3.org/ns/org#support> .
+<http://www.w3.org/ns/org#membership_user2_financial> <http://www.w3.org/ns/org#role> <http://www.w3.org/ns/org#financial> .
+<http://www.w3.org/ns/org#membership_user6_developer> <http://www.w3.org/ns/org#role> <http://www.w3.org/ns/org#developer> .
+<http://www.w3.org/ns/org#membership_user2_admin> <http://www.w3.org/ns/org#role> <http://www.w3.org/ns/org#admin> .
+<http://www.w3.org/ns/org#membership_user2_financial> <http://www.w3.org/ns/org#member> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user2> .
+<http://www.w3.org/ns/org#membership_user6_developer> <http://www.w3.org/ns/org#member> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user6> .
+<http://www.w3.org/ns/org#membership_user1_developer> <http://www.w3.org/ns/org#member> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user1> .
+<http://www.w3.org/ns/org#membership_user2_developer> <http://www.w3.org/ns/org#member> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user2> .
+<http://www.w3.org/ns/org#membership_user3_admin> <http://www.w3.org/ns/org#member> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user3> .
+<http://www.w3.org/ns/org#membership_user2_admin> <http://www.w3.org/ns/org#member> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user2> .
+<http://www.w3.org/ns/org#membership_user1_admin> <http://www.w3.org/ns/org#member> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user1> .
+<http://www.w3.org/ns/org#membership_user5_support> <http://www.w3.org/ns/org#member> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user5> .
+<http://www.w3.org/ns/org#membership_user4_financial> <http://www.w3.org/ns/org#member> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user4> .
+<http://www.w3.org/ns/org#membership_user1_financial> <http://www.w3.org/ns/org#member> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user1> .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user5> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/ldapIdentifier> "cn=user5,ou=users,dc=example,dc=com" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user4> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/ldapIdentifier> "cn=user4,ou=users,dc=example,dc=com" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user2> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/ldapIdentifier> "cn=user2,ou=users,dc=example,dc=com" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user6> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/ldapIdentifier> "cn=user6,ou=users,dc=example,dc=com" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user3> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/ldapIdentifier> "cn=user3,ou=users,dc=example,dc=com" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user1> <https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/ldapIdentifier> "cn=user1,ou=users,dc=example,dc=com" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user6> <http://xmlns.com/foaf/0.1/givenName> "User" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user4> <http://xmlns.com/foaf/0.1/givenName> "User" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user5> <http://xmlns.com/foaf/0.1/givenName> "User" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user3> <http://xmlns.com/foaf/0.1/givenName> "User" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user2> <http://xmlns.com/foaf/0.1/givenName> "User" .
+<https://gitlab.aeros-project.eu/wp4/t4.1/aeros-continuum#/user1> <http://xmlns.com/foaf/0.1/givenName> "User" .
+<http://www.w3.org/ns/org#membership_user1_developer> <http://www.w3.org/ns/org#organization> <http://www.w3.org/ns/org#example> .
+<http://www.w3.org/ns/org#membership_user2_admin> <http://www.w3.org/ns/org#organization> <http://www.w3.org/ns/org#example> .
+<http://www.w3.org/ns/org#membership_user2_financial> <http://www.w3.org/ns/org#organization> <http://www.w3.org/ns/org#example> .
+<http://www.w3.org/ns/org#membership_user1_admin> <http://www.w3.org/ns/org#organization> <http://www.w3.org/ns/org#example> .
+<http://www.w3.org/ns/org#membership_user3_admin> <http://www.w3.org/ns/org#organization> <http://www.w3.org/ns/org#example> .
+<http://www.w3.org/ns/org#membership_user2_developer> <http://www.w3.org/ns/org#organization> <http://www.w3.org/ns/org#example> .
+<http://www.w3.org/ns/org#membership_user5_support> <http://www.w3.org/ns/org#organization> <http://www.w3.org/ns/org#example> .
+<http://www.w3.org/ns/org#membership_user1_financial> <http://www.w3.org/ns/org#organization> <http://www.w3.org/ns/org#example> .
+<http://www.w3.org/ns/org#membership_user4_financial> <http://www.w3.org/ns/org#organization> <http://www.w3.org/ns/org#example> .
+<http://www.w3.org/ns/org#membership_user6_developer> <http://www.w3.org/ns/org#organization> <http://www.w3.org/ns/org#example> .
+<http://www.w3.org/ns/org#membership_user1_developer> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Membership> .
+<http://www.w3.org/ns/org#membership_user2_financial> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Membership> .
+<http://www.w3.org/ns/org#financial> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Role> .
+<http://www.w3.org/ns/org#membership_user4_financial> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Membership> .
+<http://www.w3.org/ns/org#developer> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Role> .
+<http://www.w3.org/ns/org#membership_user6_developer> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Membership> .
+<http://www.w3.org/ns/org#support> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Role> .
+<http://www.w3.org/ns/org#admin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Role> .
+<http://www.w3.org/ns/org#example> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Organization> .
+<http://www.w3.org/ns/org#membership_user1_admin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Membership> .
+<http://www.w3.org/ns/org#membership_user2_admin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Membership> .
+<http://www.w3.org/ns/org#membership_user5_support> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Membership> .
+<http://www.w3.org/ns/org#membership_user2_developer> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Membership> .
+<http://www.w3.org/ns/org#membership_user1_financial> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Membership> .
+<http://www.w3.org/ns/org#membership_user3_admin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Membership> .

@@ -1,0 +1,5 @@
+<urn:Pilot5:Device:10502070602:EnergyObservation:2024-10-31T11%3a19%3a58> a <https://saref.etsi.org/core/Observation>;
+  <https://saref.etsi.org/core/hasResult> <urn:Pilot5:Device:10502070602:EnergyObservation:2024-10-31T11%3a19%3a58:PropertyValue>;
+  <https://saref.etsi.org/core/madeBy> <urn:Pilot5:Device:10502070602>;
+  <https://saref.etsi.org/core/observes> <https://w3id.org/aerOS/building#RoomEnergy>;
+  <https://saref.etsi.org/core/hasResultTime> "2024-10-31T11:19:58" .

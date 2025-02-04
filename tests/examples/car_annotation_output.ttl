@@ -1,0 +1,31 @@
+<urn:ngsi-ld:vehicle:5g-car:1> a <http://example.com/Vehicle>;
+  <http://example.com/category> "specialUsage", "Tracked";
+  <http://example.com/vehicleType> "car";
+  <http://example.com/name> "pi";
+  <http://example.com/vehiclePlateIdentifier> "ncsrd";
+  <http://example.com/move> "true";
+  <http://example.com/owner> <urn:ngsi-ld:Organization:NCSRD>;
+  <http://example.com/areaServed> "NCSRD-IIT";
+  <http://example.com/serviceStatus> "parked";
+  <http://example.com/cargoWeight> "0.5";
+  <http://example.com/distanceCollision> "55.8884138293457"^^<http://www.w3.org/2001/XMLSchema#float>;
+  <http://example.com/heading> "243 degrees";
+  <http://example.com/signalQuality> "14 dbm";
+  <http://example.com/latitude> "25.7727S";
+  <http://example.com/longitude> "47.9626E";
+  <http://example.com/old_speed> "48 knots";
+  <http://example.com/date> "21022021";
+  <http://example.com/utc_time> "164835.888";
+  <http://example.com/geoproperty> "67891";
+  <http://example.com/altitude> "8496 meters";
+  <http://example.com/speed> _:b1;
+  <http://uri.etsi.org/ngsi-ld/location>   _:b2.
+
+  _:b2 <http://example.com/type/coordinates> 90.0913;
+       <http://example.com/type/coordinates> 38.1031.
+
+  _:b1   <http://example.com/speed#units> "knots";
+     <http://example.com/speed#value> "48";
+     <http://example.com/speed#observedAt> "2022-07-01T09:25:22.000Z".
+
+

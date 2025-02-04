@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rdf-to-ngsi-ld-configmap
+data:
+  config.cfg: |
+    # Default configurations
+    [default]
+    ## A list for the context - Just formatted like an array. This is to set the default context
+    context = ["https://fiware.github.io/data-models/context.jsonld"]
+
+    ## context = ["https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"]
+
+    # Transformations to URN
+    [urn-transform]
+    ## urn = std_urn_name - If this is the value, the id of the enties will be calculated from
+    ##                      the URI value of RDF's file, something similar to this:
+    ##                      id = urn:xxx:typeentity:identity
+    ## Any other value will not transform anything
+    # urn = std_urn_name_no
+    urn = {{ .Values.configMap.urnTransform.urn }}
+
+    [type-transform]
+    ## urn = std_type_name - If this is the value, the type will be calculated removing anything
+    ##                       before the last ":" character. It can be other things and the name
+    ##                       will be left as URI.
+    ## urn = std_default_type - Sets default value according to parameter default_type_value
+    ##
+    # urn = std_default_type
+    ## urn = std_type_urn
+    retype_function = {{ .Values.configMap.typeTransform.retypeFunction }}
+
+    # Use expanded URI for rdfs:Class by default, and compress if @context is provided
+    default_type_value = http://www.w3.org/2000/01/rdf-schema#Class
+
+    [predicates]
+    ## format = long  -- Then a complete URL (if available) will be used for the properties of the 
+    ##                            entities
+    ## format = prefix -- If the type exists as <prefix>:<name> this will be used to be set in the
+    ##                            entities
+    ## format = ""       -- Or any value, then only a short name will be used.
+    ##
+    format = {{ .Values.configMap.predicates.format }}
+
+    [encode-transform]
+    # Encode or not encode the ID of the of the entity (used mainly for patches) -- If we use a
+    # URL as ID for the entity in Orion-ld, we need to encode it in order to put the ID in
+    # the URL as a paramter for the query.
+    #
+    # If the encoder here is as shown, then the encoder will encode the ID
+    # encoder = encode_url_as_http
+    #
+    # If we don't need to encode, we can use (this is the default behaviour):
+    # encoder = encode_url_not
+    #
+    encoder = {{ .Values.configMap.encodeTransform.encoder }}
+
+    [kafka-client]
+    ## Cofiguration for the Kafka reader. It will connect to a topic in a server
+    servers = {{ .Values.configMap.kafkaClient.servers }}
+    topic = {{ .Values.configMap.kafkaClient.topic }}
+
+    # Timeout of reader. -1 means infinite.
+    reader_timeout = -1
+
+    [brokerld]
+    ### NGSI-LD Broker basic URL to connect to when data is sent to NGSI-LD Broker.
+    url = {{ .Values.configMap.brokerld.url }}
+    pool_size = 15
+
+    [kafka-demo]
+    ## This is for testing purposes. It is used with the --to-kafka parameter and it will
+    ## say how many messages are going to be sent, and the waiting time between them.
+
+    ## Max number of messages to be sent (<0 means infinity)
+    max_messages_sent = 10000
+
+    ## thread.sleep between messages. It will send a message every... seconds
+    wait_between_messages = 0

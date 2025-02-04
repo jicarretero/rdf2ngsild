@@ -1,0 +1,68 @@
+@prefix aeros: <https://w3id.org/aerOS/continuum#> .
+@prefix aerdcat: <https://w3id.org/aerOS/data-catalog#> .
+@prefix a4bdg: <https://w3id.org/aerOS/building#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <https://example.org/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@base <https://example.org/> .
+# From here on... errors because these were not added.
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix seas: <https://w3id.org/seas/>.  # Smart Energy Aware Systems
+@prefix bot:  <https://w3id.org/bot#> .  # Building Topology Ontology
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+ex:DP101 a aerdcat:DataProduct ;
+    dcterms:identifier "Data Product 101" ;
+    dcterms:description "Contains data related to the inventory of desks" ;
+    dcat:keyword "network lab DEVNET",
+                 "Marousi" ;
+    dcat:theme a4bdg:Desk ;
+    aerdcat:mapping ex:TM101 ;
+    dcterms:publisher ex:UserAAA ;
+    dcat:distribution ex:Dist101 .
+
+ex:BusinessGlossaryA a skos:ConceptScheme .
+
+a4bdg:Desk a skos:Concept ;
+    skos:inScheme ex:BusinessGlossaryA .
+
+seas:Room a skos:Concept ;
+    skos:inScheme ex:BusinessGlossaryA .
+
+bot:building a skos:Concept ;
+    skos:inScheme ex:BusinessGlossaryA .
+
+ex:UserAAA a aeros:User ;
+    foaf:givenName "John" ;
+    foaf:lastName "Doe" ;
+    org:member ex:Muser1 .
+
+ex:Muser1 a org:Membership ;
+    org:role aerdcat:DataProductOwner ;
+    org:organization ex:OrganizationACME .
+
+ex:OrganizationACME a org:Organization ;
+    dcterms:identifier "ACME" .
+
+ex:DomainA a aeros:Domain ;
+    dcterms:identifier "DomainA" .
+
+ex:Dist101 a dcat:Distribution ;
+    dcat:accessURL <http://context-broker-1:8080/ngsi-ld/> ;
+    dcat:mediaType <https://www.iana.org/assignments/media-types/application/ld+json> ;
+    dcat:accessService ex:CB1 .
+
+ex:CB1 a aerdcat:ContextBroker ;
+    dcat:endpointURL <http://context-broker-1:8080/ngsi-ld/> ;
+    dcterms:conformsTo <https://www.etsi.org/deliver/etsi_gs/CIM/001_099/009/01.08.01_60/gs_CIM009v010801p.pdf> ;
+    aerdcat:servesDataProduct ex:DP101 ;
+    aeros:domain ex:DomainA .
+
+ex:DomainACatalog a aerdcat:Catalog ;
+    dcterms:title "Domain A Catalog" ;
+    aeros:domain ex:DomainA ;
+    aerdcat:contextBroker ex:CB1 ;
+    aerdcat:dataProduct ex:DP101 ;
+    dcat:themeTaxonomy ex:BusinessGlossaryA .

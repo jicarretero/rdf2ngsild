@@ -1,0 +1,24 @@
+@prefix aeros: <https://w3id.org/aerOS/continuum#> .
+@prefix aerdcat: <https://w3id.org/aerOS/data-catalog#> .
+@prefix a4bdg: <https://w3id.org/aerOS/building#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <https://example.org/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@base <https://example.org/> .
+# From here on... errors because these were not added.
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix seas: <https://w3id.org/seas/>.  # Smart Energy Aware Systems
+@prefix bot:  <https://w3id.org/bot#> .  # Building Topology Ontology
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+ex:DP101 a aerdcat:DataProduct ;
+    dcterms:identifier "Data Product 101" ;
+    dcterms:description "Contains data related to the inventory of desks" ;
+    dcat:keyword "network lab DEVNET",
+                 "Marousi" ;
+    dcat:theme a4bdg:Desk ;
+    aerdcat:mapping ex:TM101 ;
+    dcterms:publisher ex:UserAAA ;
+    dcat:distribution ex:Dist101 .
