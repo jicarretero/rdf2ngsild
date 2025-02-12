@@ -2,7 +2,7 @@
 
 This Python project implements a generic translator from RDF to NGSI-LD.
 
-The work takes inspiration from[rdflib](https://rdflib.readthedocs.io/en/stable/index.html) plugins that store RDF data in backends like Neo4j (https://github.com/neo4j-labs/rdflib-neo4j).
+The work takes inspiration from[rdflib](https://rdflib.readthedocs.io/en/stable/index.html) plugins that store RDF data in backends like Neo4j (<https://github.com/neo4j-labs/rdflib-neo4j>).
 
 In this sense, this project provides an rdflib plugin where an NGSI-LD Context Broker works as the storage backend for RDF data. Additionally, the translator supports the ingestion of streams of RDF data via Kafka.
 
@@ -45,8 +45,8 @@ The following set of rules are applied to translate the RDF data model (triples)
 
 ## Translation Modes
 
-The translator could be configured to expect `batches` of RDF data, instead of `streaming` 
-events. In batching mode, the translator can analyze all RDF triples for the same subject, 
+The translator could be configured to expect `batches` of RDF data, instead of `streaming`
+events. In batching mode, the translator can analyze all RDF triples for the same subject,
 bundle the datatype and object properties, and
 
 ```
@@ -58,10 +58,13 @@ This approach can improve performance as less NGSI-LD requests are sent
 to create the Entities in the Context Broker.
 
 ## Installation
+
 ### Prerequisites
+
 Python 3.10+ is required. Some programming constructs from Python 3.10 has been used in the project. At least Python 3.11 is recommended.
 
 ### Installation in our system, with virtual environment
+
 Creating a Python Virtual Environment is quite recommendable `virtualenv ~/.venv/rdf2ngsild` and activating the virtual environment before doing anything with `source ~/.ven/rdf2ngsild/bin/activate`. Then we can proceed with installation:
 
 ```
@@ -71,6 +74,7 @@ pip install -r requirements.txt
 ```
 
 ### Docker installation
+
 The Docker image can be built using the following command:
 
 ```bash
@@ -78,13 +82,15 @@ sudo docker image build -t aeros-project/rdf-to-ngsi-ld:latest .
 ```
 
 ## Usage
-The application reads RDF triples from a Kafka topic and converts them to NGSI-LD, writing the output to an NGSI-LD Context Broker (like Orion-LD): 
+
+The application reads RDF triples from a Kafka topic and converts them to NGSI-LD, writing the output to an NGSI-LD Context Broker (like Orion-LD):
 
 ```bash
 python main.py --from-kafka --to-ngsild-broker
 ```
 
 ## Configuration file
+
 This is an example of a configuration file:
 
 ```ini
@@ -189,23 +195,27 @@ wait_between_messages = 0
 ### Treat a set of attributes as an array
 ### 
 ### We define a list of attributes (URIs) that will be treated always as arrays.
+### Please, not the identation!!! It will fail if it is not correctly idented.
 ###
 attributes = [
-"http://tmp1",
-"http://tmp2"
-]
+  "http://tmp1",
+  "http://tmp2"
+  ]
 ```
 
-## Testing purposes.
+## Testing purposes
 
 ### Using Kafka / Red Panda
-The idea of writing this translator started from the need to read RDF data from a queue, 
-transforming it to NGSI-LD and writing that result to a NGSI-LD Context broker. So, this example 
+
+The idea of writing this translator started from the need to read RDF data from a queue,
+transforming it to NGSI-LD and writing that result to a NGSI-LD Context broker. So, this example
 will cover how to test this.
 
 #### Feeding the Queue (preparing the test)
-For testing purposes, the application can write data to a Kafka queue topic. This is the part of 
+
+For testing purposes, the application can write data to a Kafka queue topic. This is the part of
 the configuration needed to write data to a kafka queue:
+
 ```ini
 [kafka-client]
 ## Cofiguration for the Kafka reader. It will connect to a topic in a server
@@ -229,6 +239,7 @@ wait_between_messages = 0
 ```
 
 And we can execute the following command:
+
 ```bash
 python main.py --feed-kafka-demo tests/examples/simple-sample-relationship.ttl 
 tests/examples/containerlab-graph.nt
@@ -238,8 +249,9 @@ The translator will insert in the kafka queue defined in the `ini` file behind `
 `the corresponding values.
 
 #### Reading that data / benchmarking
-We can configure the **translator** to read from the Kafka queue (where we previously inserted 
-that data) and, let's say we can send that a NGSI-LD Broker listening on port 1026. We want to 
+
+We can configure the **translator** to read from the Kafka queue (where we previously inserted
+that data) and, let's say we can send that a NGSI-LD Broker listening on port 1026. We want to
 know how long did it take to read all the messages from the queue and write them in the Broker.
 
 The relevant part of the `ini` file will be:
@@ -289,7 +301,7 @@ So, in order to perform the benchmarking we could run the transformer:
 TIME: 7.603782892227173
 ```
 
-It took 7.6 seconds to read 10000 (as show in `max_messages_sent`) and writing them to a broker. 
+It took 7.6 seconds to read 10000 (as show in `max_messages_sent`) and writing them to a broker.
 This roughly means 1315 messages per second.
 
 If we don't run that with several cores:
@@ -302,8 +314,8 @@ TIME: 143.14611268043518
 
 It is much slower, less than 70 messages per second.
 
-
 ## Meaning of the "transformations"
+
 Let's use as a simple RDF for the examples the following RDF file:
 
 ```rdf
@@ -333,21 +345,26 @@ ex:DP101 a aerdcat:DataProduct ;
     dcat:distribution ex:Dist101 .
 ```
 
-In every of the following examples I'll change the config file but I'll execute the very same 
+In every of the following examples I'll change the config file but I'll execute the very same
 command:
+
 ```bash
 ./main.py --print tests/examples/simple-sample-test-expansions.ttl | jq .
 ```
+
 ### The `ìd` property: `urn_transform` section in config file
+
 This parameter only affects the `id` property of the entity
 
 #### Get the very long name (an url)
+
 ```ini
 [urn-transform]
 urn = std_urn_name_no
 ```
 
 The output will be (piped to `jq '{ "id": .id}'`)
+
 ```json
 {
   "id": "https://example.org/DP101"
@@ -355,6 +372,7 @@ The output will be (piped to `jq '{ "id": .id}'`)
 ```
 
 This also affects the **Relationships**, for example
+
 ```json lines
 ....
   "distribution": {
@@ -363,12 +381,16 @@ This also affects the **Relationships**, for example
   },
 ....
 ```
+
 #### Get urn as suggested by ETSI
+
 ```ini
 [urn-transform]
 urn = std_urn_name
 ```
+
 The output will be (piped to `jq '{ "id": .id}'`)
+
 ```json
 {
   "id": "urn:ngsi-ld:DP101"
@@ -376,6 +398,7 @@ The output will be (piped to `jq '{ "id": .id}'`)
 ```
 
 And of course, in Relationship lines:
+
 ```json lines
 ....
    "distribution": {
@@ -386,10 +409,12 @@ And of course, in Relationship lines:
 ```
 
 ### The `type` property: `type_transform` section in config file
-There is a default value when the `type` can't be deducted from the RDF file. All data which 
+
+There is a default value when the `type` can't be deducted from the RDF file. All data which
 type is unknown will be set to the value set in the `default_type_value`.
 
 So, the interesting variables are `urn` and `retype_function`.
+
 ```ini
 [type-transform]
 urn = std_type_default
@@ -400,12 +425,14 @@ default_type_value = http://www.w3.org/2000/01/rdf-schema#Class
 ```
 
 #### Get the simples name for `type`
+
 ```ini
 [type-transform]
 retype_function = std_name_only
 ```
 
 The `type` property will be shown as:
+
 ```json
 {
   "type": "DataProduct"
@@ -413,12 +440,14 @@ The `type` property will be shown as:
 ```
 
 #### Get the `type` as etsi-urn
+
 ```ini
 [type-transform]
 retype_function = std_urn_name
 ```
 
 The `type` property will be shown as:
+
 ```json
 {
     "type": "urn:ngsi-ld:data-catalog:DataProduct"
@@ -426,12 +455,14 @@ The `type` property will be shown as:
 ```
 
 #### Get the `type` as default type (possibly url)
+
 ```ini
 [type-transform]
 retype_function = std_default_type
 ```
 
 The `type` property will be shown as:
+
 ```json
 {
     "type": "https://w3id.org/aerOS/data-catalog#DataProduct"
@@ -439,7 +470,8 @@ The `type` property will be shown as:
 ```
 
 ### Get property names
-The property names could be a long name (URL), an abbreviated name (rdfs:whatever) or a very 
+
+The property names could be a long name (URL), an abbreviated name (rdfs:whatever) or a very
 short name.
 
 ```ini
@@ -453,14 +485,15 @@ short name.
 format=""
 ```
 
-We can have 3 possible values for a property. Let's consider the property `description`, it can 
+We can have 3 possible values for a property. Let's consider the property `description`, it can
 take one of the 3 names:
 
-* `description`  if `format = ""`
-* `dcterms:description`  if `format = prefix`
-* `http://purl.org/dc/terms/description` if `format = long`
+- `description`  if `format = ""`
+- `dcterms:description`  if `format = prefix`
+- `http://purl.org/dc/terms/description` if `format = long`
 
 ## Attributtes defined as arrays
+
 In order to define an attribute as an array, in the config file we must define a section like the following
 one:
 
@@ -469,12 +502,14 @@ one:
 ### Treat a set of attributes as an array
 ### 
 ### We define a list of attributes (URIs) that will be treated always as arrays.
+### Please, not the identation!!! It will fail if it is not correctly idented.
 ###
 attributes = [
-"http://tmp1",
-"http://tmp2"
-]
+  "http://tmp1",
+  "http://tmp2"
+  ]
 ```
 
 So, when the conversor meets any of those attributes, it will treat them as an array instead of a single
 attribute.
+
