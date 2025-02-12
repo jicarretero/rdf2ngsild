@@ -7,6 +7,7 @@ from config_translator import ConfigTranslator
 class TestSubjectAnalysis(unittest.TestCase):
 
     def __get_graph(self, filename) -> Graph:
+        ConfigTranslator("./configs/test_config.cfg")
         g = Graph()
         with open(filename, "r", encoding='UTF-8') as f:
             g.parse(file=f)
@@ -35,7 +36,6 @@ class TestSubjectAnalysis(unittest.TestCase):
         assert kv == pred_obj.value
 
     def test_predicates_bnode_value(self):
-        ConfigTranslator("./configs/test_config.cfg")
         g = self.__get_graph("examples/simple-sample-bnode.ttl")
         subjects = {}
         for sub, pred, obj in g:

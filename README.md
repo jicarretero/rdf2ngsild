@@ -143,8 +143,13 @@ format=""
 #
 # If we don't need to encode, we can use (this is the default behaviour):
 # encoder = encode_url_not
-#
+# 
+# If unquote, then the URIs are decoded to values.
+# unquote = True | False 
+
 encoder = encode_url_as_http
+
+unquote = True
 
 [kafka-client]
 ## Cofiguration for the Kafka reader. It will connect to a topic in a server
@@ -163,9 +168,12 @@ reader_timeout = -1
 ## pool_size -- The number of processes used to dispatch data to the NGSI-LD Broker
 ##              Test must be done for fine tuning, but too low and too high values doesn't get
 ##              the best performance out of the transformer
-## 
+## concat_array -- If its value is True, it will use header 'aerOS-Array-Concat' in order
+##                 to concat arrays in Orionld broker
 url = http://localhost:1026
 pool_size = 1
+concat_array = False
+
 
 [kafka-demo]
 ## This is for testing purposes. It is used with the --to-kafka parameter and it will
@@ -176,6 +184,16 @@ max_messages_sent = 10000
 
 ## thread.sleep between messages. It will send a message every... seconds
 wait_between_messages = 0
+
+[treat-as-array]
+### Treat a set of attributes as an array
+### 
+### We define a list of attributes (URIs) that will be treated always as arrays.
+###
+attributes = [
+"http://tmp1",
+"http://tmp2"
+]
 ```
 
 ## Testing purposes.
@@ -236,9 +254,11 @@ The relevant part of the `ini` file will be:
 ##              Test must be done for fine tuning, but too low and too high values doesn't get
 ##              the best performance out of the transformer. This only works if the transformer
 ##              is started with --async-run
-## 
+## concat_array -- If its value is True, it will use header 'aerOS-Array-Concat' in order
+##                 to concat arrays in Orionld broker
 url = http://localhost:1026
-pool_size = 15
+pool_size = 1
+concat_array = False
 
 [kafka-client]
 ## Cofiguration for the Kafka reader. It will connect to a topic in a server
@@ -440,3 +460,21 @@ take one of the 3 names:
 * `dcterms:description`  if `format = prefix`
 * `http://purl.org/dc/terms/description` if `format = long`
 
+## Attributtes defined as arrays
+In order to define an attribute as an array, in the config file we must define a section like the following
+one:
+
+```ini
+[treat-as-array]
+### Treat a set of attributes as an array
+### 
+### We define a list of attributes (URIs) that will be treated always as arrays.
+###
+attributes = [
+"http://tmp1",
+"http://tmp2"
+]
+```
+
+So, when the conversor meets any of those attributes, it will treat them as an array instead of a single
+attribute.

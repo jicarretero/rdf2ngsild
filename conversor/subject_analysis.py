@@ -1,8 +1,7 @@
 from rdflib import Graph, URIRef
-from urllib.parse import unquote
+from  transformer import unquote
 from conversor.subjects import Subject, BNodeFoundException
 from config_translator import ConfigTranslator
-import json
 
 
 class SubjectAnalysis:

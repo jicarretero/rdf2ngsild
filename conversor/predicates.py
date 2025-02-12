@@ -1,4 +1,6 @@
 from rdflib import Graph, term
+
+from config_translator import ConfigTranslator
 from transformer import transformer
 
 class PredicateError(TypeError):
@@ -21,11 +23,17 @@ class Predicates:
         if not isinstance(pred, term.URIRef):
             raise PredicateError("Subject must be an URI")
 
+        self.uri = str(pred)
         self.prefix, self.url, self.thing = graph.compute_qname(pred)
 
         if self.thing == "type":
             self.thing = f"{self.prefix}:type"
-        self.value = None
+
+        if self.uri in ConfigTranslator().get_list("treat-as-array", "attributes"):
+            self.value = []
+        else:
+            self.value = None
+
         self.isreference = False
         self.isBnodeData = False
 
@@ -41,11 +49,14 @@ class Predicates:
             self.isBnodeData = str(obj).startswith('https://rdflib.github.io/.well-known/genid/rdflib/')
             self.isreference = (self.isreference or isinstance(obj, term.URIRef)) and not self.isBnodeData
             value = str(obj) if not isinstance(obj, term.URIRef) else transformer(str(obj))
+
             if self.value is None:
-                self.value = value
+                self.value = value if value != "" else []
             elif type(self.value) is list:
-                self.value.append(value)
+                if value != "":
+                    self.value.append(value)
             else:
                 v = self.value
                 self.value = [v]
-                self.value.append(value)
+                if value != "":
+                    self.value.append(value)

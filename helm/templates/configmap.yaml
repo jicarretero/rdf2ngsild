@@ -7,7 +7,7 @@ data:
     # Default configurations
     [default]
     ## A list for the context - Just formatted like an array. This is to set the default context
-    context = ["https://fiware.github.io/data-models/context.jsonld"]
+    context = []
 
     ## context = ["https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"]
 
@@ -28,10 +28,11 @@ data:
     ##
     # urn = std_default_type
     ## urn = std_type_urn
+    urn = {{ .Values.configMap.typeTransform.urn }}
     retype_function = {{ .Values.configMap.typeTransform.retypeFunction }}
 
     # Use expanded URI for rdfs:Class by default, and compress if @context is provided
-    default_type_value = http://www.w3.org/2000/01/rdf-schema#Class
+    default_type_value = {{ .Values.configMap.typeTransform.defaultTypeValue }}
 
     [predicates]
     ## format = long  -- Then a complete URL (if available) will be used for the properties of the 

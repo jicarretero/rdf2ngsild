@@ -5,12 +5,12 @@
 replicaCount: 1
 
 image:
-  repository: registry.gitlab.aeros-project.eu/aeros-public/common-deployments/data-fabric/rdf-to-ngsi-ld
+  repository: dockers.fiware.org/rdfngsild
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "1.0.2"
 
-imagePullSecrets: [{name: aeros-common-deployments}]
+imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
@@ -92,7 +92,9 @@ configMap:
   urnTransform:
     urn: std_default_type
   typeTransform:
-    retypeFunction: std_name_only
+    urn: std_default_type
+    retypeFunction: std_default_type
+    defaultTypeValue: http://www.w3.org/2000/01/rdf-schema#Class
   predicates:
     format: long
   encodeTransform:
@@ -112,7 +114,7 @@ volumes:
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts:
   - name: configmap-volume
-    mountPath: "/opt/aeros/rdf-to-ngsi-ld/config.cfg"
+    mountPath: "/opt/aeros/rdf-to-ngsild/config.cfg"
     subPath: config.cfg
 
 nodeSelector: {}

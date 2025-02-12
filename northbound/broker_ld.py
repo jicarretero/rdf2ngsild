@@ -28,6 +28,7 @@ class BrokerLD:
         self.headers = {'content-type': 'application/ld+json'}
         self.known_ids = set([])
         self.session = Session()
+        self.concat_arrays = ConfigTranslator().get_boolean("brokerld", "concat_arrays")
 
     @classmethod
     def instance(cls):
@@ -104,7 +105,9 @@ class BrokerLD:
             pass
         id_entity = encode_url(payload_id)
         headers = {'content-type': 'application/json'}
-        url = self.url + id_entity + "/attrs"
+        if self.concat_arrays:
+            headers['aerOS-Array-Concat'] = 'True'
+        url = self.url + id_entity
         try:
             r = self.session.patch(
                 url=url, headers=headers, data=json.dumps(payload))

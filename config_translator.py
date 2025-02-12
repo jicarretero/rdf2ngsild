@@ -1,5 +1,7 @@
 import configparser
 import json
+from functools import lru_cache
+
 
 class ConfigTranslator:
     """
@@ -19,6 +21,7 @@ class ConfigTranslator:
             self.filename = filename
             self.config.read(filename)
 
+        @lru_cache
         def get_string(self, block, name):
             """
             Return a String from the configuration parser
@@ -33,6 +36,8 @@ class ConfigTranslator:
                 return ""
             except configparser.NoSectionError:
                 return ""
+
+        @lru_cache
         def get_float(self, block, name):
             """
             Get a float value from the configuration pareser
@@ -46,6 +51,8 @@ class ConfigTranslator:
                 return float(str_value)
             except:
                 return 0.0
+
+        @lru_cache
         def get_interger(self, block, name):
             """
 
@@ -59,11 +66,27 @@ class ConfigTranslator:
             except:
                 return 0
 
+        @lru_cache
+        def get_boolean(self, block, name):
+            """
+
+            :param block:
+            :param name:
+            :return: an boolean value from the configuration parser or 0 as default value.
+            """
+            str_value = self.get_string(block, name)
+            try:
+                return bool(str_value)
+            except:
+                return False
+
+        @lru_cache
         def get_list(self, block, name):
             try:
                 v = self.config.get(block, name)
                 return set(json.loads(v))
-            except:
+            except Exception as e:
+                print(e)
                 return set()
 
 
@@ -86,3 +109,5 @@ if __name__ == "__main__":
     print(l)
     print(type(l))
 
+    v = tr.get_boolean("brokerld", "concat_arrays")
+    print(v)

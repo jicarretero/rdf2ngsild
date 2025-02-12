@@ -49,6 +49,7 @@ def out_get_curl(sa: SubjectAnalysis):
     :param sa:  SubjectAnalysis to transvers and show the result in terminal
     :return:
     """
+    print("CURLIFICAO!")
     for a in sa:
         url = encode_url(a['id'])
         print(f"curl 'http://localhost:1026/ngsi-ld/v1/entities/{url}'")

@@ -1,6 +1,6 @@
 from config_translator import ConfigTranslator
 import functools
-
+from urllib.parse import unquote as urllib_unquote
 
 def std_name_only(data: str) -> str:
     """
@@ -115,6 +115,18 @@ def encode_url(data: str) -> str:
     f_name = ct.get_string("encode-transform", "encoder")
     return global_transformer(f_name, data)
 
+def unquote(data: str) -> str:
+    """
+    Decodes URIs if unquote is True.
+
+    :param data:
+    :return:
+    """
+    d = data
+    ct = ConfigTranslator.instance
+    if ct.get_boolean("encode-transform", "unquote"):
+        d = urllib_unquote(data)
+    return d
 
 if __name__ == "__main__":
     print(encode_url_as_http("http://www.w3.org/ns/org"))

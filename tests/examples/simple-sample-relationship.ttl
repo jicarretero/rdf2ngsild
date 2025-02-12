@@ -2,8 +2,10 @@
 
 ab:cindy ab:homeTel "435634123" .
 ab:cindy ab:email   "lacindy@whoelscould.be" .
+ab:cindy ab:jobName    "surgeon" .
 
 ab:manuel ab:homeTel "981321567" .
 ab:manuel ab:email   "eltiomanuel@thecompany.is" .
+ab:manuel ab:jobName    "bureaucrat" .
 
 ab:manuel ab:isbossof  ab:cindy .
