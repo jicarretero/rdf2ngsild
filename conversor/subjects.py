@@ -149,6 +149,10 @@ class Subject:
                 yld_value = {}
                 for key, value, is_r in bnode_object:
                     if k == "http://uri.etsi.org/ngsi-ld/location":
+                        try:
+                            value = [float(value[0]), float(value[1])]
+                        except ValueError:
+                            pass
                         value = {"type":"Point", "coordinates": value, "isGeo": True}
                         yld_value = value
                     else:

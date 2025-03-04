@@ -21,6 +21,8 @@ class TestGeoproperty(unittest.TestCase):
             assert data["type"] == "GeoProperty"
             assert data["value"]["type"] == "Point"
             assert "coordinates" in data["value"]
+            assert( type(data["value"]["coordinates"][0]) is float)
+            assert( type(data["value"]["coordinates"][1]) is float)
 
-        print(a)
+        # print(json.dumps(a))
 
