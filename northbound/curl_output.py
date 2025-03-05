@@ -13,3 +13,4 @@ class CurlOutput:
             url = encode_url(payload['id'])
             output = output.join("\n").join(f"curl 'http://localhost:1026/ngsi-ld/v1/entities/{url}'")
         print(output)
+        return output

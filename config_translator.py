@@ -76,7 +76,7 @@ class ConfigTranslator:
             """
             str_value = self.get_string(block, name)
             try:
-                return bool(str_value)
+                return str_value.lower() == "true"
             except:
                 return False
 
