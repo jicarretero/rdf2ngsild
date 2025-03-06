@@ -1,0 +1,9 @@
+{
+    "@id": "urn:ngsi-ld:vehicle:5g-car:1_as_MovingTarget",
+    "@type": "http://example.com/MovingTarget",
+    "http://example.com/latitude": "40.5",
+    "http://example.com/longitude": "25.5",
+    "http://example.com/course": "0.0 deg",
+    "http://example.com/speed": "0.0 m/s",
+    "http://example.com/timestamp": "124731.0"
+}

@@ -1,8 +1,26 @@
 import functools
+import json
 import sys
 from rdflib import Graph
 
 from conversor.subjects import Subject
+import xml.etree.ElementTree as ET
+
+@functools.cache
+def is_json(myjson):
+    try:
+        json.loads(myjson)
+    except ValueError:
+        return False
+    return True
+
+@functools.cache
+def is_xml(myxml):
+    try:
+        ET.fromstring(myxml)
+    except ET.ParseError:
+        return False
+    return True
 
 
 @functools.cache
@@ -15,7 +33,16 @@ def get_graph_from_message(message) -> Graph:
     :return: Graph representation of the RDF input data.
     """
     g = Graph()
-    g.parse(data=message)
+    try:
+        g.parse(data=message)
+    except Exception as e:
+        if is_json(message):
+            g.parse(data=message, format="json-ld")
+        elif is_xml(message):
+            g.parse(data=message, format="xml")
+        else:
+            raise e
+
     # Skolemize graph to transform BNodes into URIRef
     skol_g = g.skolemize()
     return skol_g
