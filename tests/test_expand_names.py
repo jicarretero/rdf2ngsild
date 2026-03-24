@@ -8,6 +8,7 @@ from transformer import transformer
 
 class TestExpandNames(unittest.TestCase):
     def setUp(self) -> None:
+        ConfigTranslator.instance = None
         self.o = get_graph("examples/example-to-expand-names-nacho.ttl")
         ConfigTranslator("configs/test_config_no_transform.cfg")
 

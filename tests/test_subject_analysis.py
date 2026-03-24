@@ -7,6 +7,7 @@ from config_translator import ConfigTranslator
 class TestSubjectAnalysis(unittest.TestCase):
 
     def __get_graph(self, filename) -> Graph:
+        ConfigTranslator.instance = None
         ConfigTranslator("./configs/test_config.cfg")
         g = Graph()
         with open(filename, "r", encoding='UTF-8') as f:

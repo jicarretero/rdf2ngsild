@@ -8,6 +8,7 @@ from config_translator import ConfigTranslator
 class TestOnthology(unittest.TestCase):
     def setUp(self) -> None:
         dir_path = os.path.dirname(os.path.realpath(__file__))
+        ConfigTranslator.instance = None
         ConfigTranslator(f"{dir_path}/configs/test_config_nameonly.cfg")
         self.g = get_graph(f"{dir_path}/onthologies/ontology-protege.ttl")
 

@@ -10,6 +10,7 @@ class TestAddContext(unittest.TestCase):
     def setUp(self) -> None:
         self.o = get_graph("onthologies/ontology-protege.ttl")
         self.g = get_graph("examples/containerlab-graph.nt")
+        ConfigTranslator.instance = None
         ConfigTranslator("configs/test_config_nameonly.cfg")
         # self.g = get_graph("examples/simple-sample-relationship.ttl")
 

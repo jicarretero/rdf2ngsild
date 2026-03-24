@@ -19,6 +19,7 @@ class TestRDFGraph(TestCase):
     """
 
     def setUp(self) -> None:
+        ConfigTranslator.instance = None
         ConfigTranslator("configs/test_config.cfg")
 
 

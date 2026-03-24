@@ -10,6 +10,7 @@ from config_translator import ConfigTranslator
 class TestRelationships(unittest.TestCase):
     def setUp(self) -> None:
         dir_path = os.path.dirname(os.path.realpath(__file__))
+        ConfigTranslator.instance = None
         ConfigTranslator(f"{dir_path}/configs/test_config_nameonly.cfg")
 
     def test_simple_relationship(self):

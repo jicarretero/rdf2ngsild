@@ -7,6 +7,7 @@ from helpers import get_graph, get_graph_from_message
 
 class TestJSONLDNQuads(unittest.TestCase):
     def setUp(self):
+        ConfigTranslator.instance = None
         ConfigTranslator("configs/test_config_as_with_k8s.cfg")
 
     def test_load_different_formats(self):

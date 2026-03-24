@@ -10,6 +10,7 @@ from northbound.northbound import Northbound
 class TestSingleNgsildPerRDF(TestCase):
     def setUp(self):
         self.g = get_graph("examples/simple-sample-relationship.ttl")
+        ConfigTranslator.instance = None
         ConfigTranslator("configs/test_config.cfg")
 
     def test_output_single_ngsild(self):
