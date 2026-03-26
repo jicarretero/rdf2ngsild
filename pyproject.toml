@@ -1,0 +1,27 @@
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.lint]
+# E/F = pycodestyle errors + pyflakes (standard baseline)
+select = ["E", "F", "W"]
+
+# Ignoring rules violated in existing code — tighten these over time:
+#   F401: unused imports (24 violations)
+#   F841: local variable assigned but never used (20)
+#   F811: redefinition of unused name (7)
+#   E722: bare `except` (5)
+#   E741: ambiguous variable name (3)
+#   E721: type comparison via == instead of isinstance (3)
+#   E711: comparison to None (2)
+#   E712: comparison to True/False (1)
+ignore = [
+    "F401",  # unused imports (24 violations)
+    "F841",  # local variable assigned but never used (20)
+    "F811",  # redefinition of unused name (7)
+    "E501",  # line too long — many violations, fix separately
+    "E722",  # bare `except` (5)
+    "E741",  # ambiguous variable name (3)
+    "E721",  # type comparison via == instead of isinstance (3)
+    "E711",  # comparison to None (2)
+    "E712",  # comparison to True/False (1)
+]

@@ -127,7 +127,7 @@ def parse_args():
                         action='store_true',
                         help='Demo writer to send messages to kafka for testing. It needs some files as parameters')
     parser.add_argument('--display-rdf', required=False,
-                        help="Just display rdf output in a simple way", 
+                        help="Just display rdf output in a simple way",
                         action='store_true')
     parser.add_argument('--benchmark', required=False,
                         action='store_true',

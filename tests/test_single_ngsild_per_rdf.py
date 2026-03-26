@@ -25,4 +25,3 @@ class TestSingleNgsildPerRDF(TestCase):
         for d in data:
             assert d['id'] in ('urn:ngsi-ld:addressbook:manuel','urn:ngsi-ld:addressbook:cindy')
         print(ngisld_builder.json_data())
-        

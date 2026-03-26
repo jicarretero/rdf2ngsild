@@ -78,7 +78,7 @@ class TestRDFGraph(TestCase):
 -H 'Content-Type: application/ld+json' \
 --data-raw '{js}'")
             print(js)
-            
+
     def test_sample_relationship(self):
         '''
         Test that ngsi-ld urns are ETSI GS CIM 009 Annex A.3 compliant
