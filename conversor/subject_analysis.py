@@ -25,9 +25,9 @@ class SubjectAnalysis:
         self.extra_context = {}
 
         for subj, pred, obj in graph:
-            subj = URIRef(unquote(str(subj))) if type(subj) == URIRef else subj
-            pred = URIRef(unquote(str(pred))) if type(pred) == URIRef else pred
-            obj = URIRef(unquote(str(obj))) if type(obj) == URIRef else obj
+            subj = URIRef(unquote(str(subj))) if isinstance(subj, URIRef) else subj
+            pred = URIRef(unquote(str(pred))) if isinstance(pred, URIRef) else pred
+            obj = URIRef(unquote(str(obj))) if isinstance(obj, URIRef) else obj
             self.set_subject_data(subj, pred, obj)
 
         # TODO - This context should be produced as parameter.
