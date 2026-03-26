@@ -19,7 +19,7 @@ ignore = [
     "F841",  # local variable assigned but never used (20)
     "F811",  # redefinition of unused name (7)
     "E501",  # line too long — many violations, fix separately
-    "E722",  # bare `except` (5)
+    # "E722",  # bare `except` (5)
     "E741",  # ambiguous variable name (3)
     "E721",  # type comparison via == instead of isinstance (3)
     "E711",  # comparison to None (2)
