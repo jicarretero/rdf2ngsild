@@ -1,0 +1,22 @@
+name: python tests
+
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - run: pip install -r requirements.txt
+
+      - name: Run tests
+        working-directory: tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python -m unittest
+

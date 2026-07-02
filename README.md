@@ -61,7 +61,7 @@ to create the Entities in the Context Broker.
 
 ### Prerequisites
 
-Python 3.10+ is required. Some programming constructs from Python 3.10 has been used in the project. At least Python 3.11 is recommended.
+Python 3.10+ is required. Some programming constructs from Python 3.10 has been used in the project. At least Python 3.14 is recommended.
 
 ### Installation in our system, with virtual environment
 

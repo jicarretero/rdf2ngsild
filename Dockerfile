@@ -16,7 +16,7 @@ RUN git clone https://github.com/jicarretero/rdf2ngsild.git --branch $VERSION $I
 
 
 # Stage PIP REQUIREMENTS
-FROM python:3.11-alpine AS pip-requirements
+FROM python:3.14-alpine AS pip-requirements
 
 ARG PROJECT=aeros
 ARG COMPONENT=rdf-to-ngsild
@@ -30,8 +30,8 @@ COPY --from=git-clone $INSTALLATION_PATH/requirements.txt /requirements.txt
 RUN pip install --prefix=$INSTALLATION_PATH -r /requirements.txt && chmod +x $INSTALLATION_PATH/main.py || true
 
 # Stage FINAL
-# FROM python:3.11-bookworm as final
-FROM python:3.11-alpine AS final
+# FROM python:3.14-bookworm as final
+FROM python:3.14-alpine AS final
 
 ARG PROJECT=aeros
 ARG COMPONENT=rdf-to-ngsild
@@ -39,7 +39,7 @@ ARG VERSION=main
 ARG INSTALLATION_PATH=/opt/$PROJECT/$COMPONENT
 
 LABEL maintainer="joseignacio.carretero@fiware.org"
-LABEL description="rdf to ngsi-ld component built with Python version 3.11 on Debian bookworm Linux"
+LABEL description="rdf to ngsi-ld component built with Python version 3.14 on Debian bookworm Linux"
 LABEL version=$VERSION
 
 RUN mkdir -p $INSTALLATION_PATH
