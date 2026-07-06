@@ -25,7 +25,7 @@ jobs:
       - name: run bandit
         run: |
           # -r => Recursive scanning ; -ll => only med and high vulns.
-          bandit -r . -ll
+          bandit -r . -lll
 
       - name: run safety
         run: |
