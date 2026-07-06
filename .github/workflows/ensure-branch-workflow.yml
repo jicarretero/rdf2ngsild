@@ -1,0 +1,22 @@
+name: ensure-branch-workflow
+
+on:
+  pull_request:
+    types: [open, syncronize, reopen, edited]
+
+jobs:
+  check-branch-flow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validata merge direction
+        run: |
+          BASE="${{ github_event.pull_request.base.ref }}"
+          HEAD="${{ github_event.pull_request.head.ref }}"
+
+          if [[ $BASE == "main" && $HEAD != "develop" ]]; then
+            echo "❌ Only 'develop' can be pull requested to 'main'. Got head='$HEAD'"
+            exit 1
+          fi
+
+          echo "✅ Pull request from $HEAD → $BASE [ok]"
+
